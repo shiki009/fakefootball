@@ -16,7 +16,7 @@
   "routes": [
     {
       "src": "/(.*)",
-      "dest": "/index.py"
+      "dest": "index.py"
     }
   ]
 }
