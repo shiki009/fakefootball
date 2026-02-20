@@ -13,7 +13,7 @@ from db import engine, session_local
 from models import Base
 import seed
 
-from routers import posts, comments, votes, tags, stats, regulars, users
+from routers import posts, comments, votes, tags, stats, regulars, users, cron
 
 
 @asynccontextmanager
@@ -43,6 +43,7 @@ app.include_router(tags.router)
 app.include_router(stats.router)
 app.include_router(regulars.router)
 app.include_router(users.router)
+app.include_router(cron.router)
 
 # Serve Vue SPA (built frontend) - mount last so /api routes take precedence
 _frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")

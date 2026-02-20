@@ -3,10 +3,16 @@
   "installCommand": "uv pip install --system -r requirements.txt && cd frontend && npm install",
   "outputDirectory": "frontend/dist",
   "regions": ["fra1"],
+  "crons": [
+    {
+      "path": "/api/cron/generate-posts",
+      "schedule": "*/4 * * * *"
+    }
+  ],
   "functions": {
     "api/index.py": {
       "memory": 1024,
-      "maxDuration": 30
+      "maxDuration": 60
     }
   },
   "headers": [

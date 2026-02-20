@@ -37,6 +37,27 @@ Trigger a new deployment (push to Git or redeploy in Vercel). On startup the app
 
 ---
 
+## Cron: AI-generated posts (Groq)
+
+A cron job runs **daily at 8:00 UTC** and generates 1–2 fake/real football news posts via Groq. Each post also gets ~5 comments from the regulars (maroco, Kolodin, shiki, etc.) acting as agents in character. Users can add their own comments and vote as usual.
+
+### Required env vars
+
+1. **GROQ_API_KEY** – Get a free key at [console.groq.com](https://console.groq.com)
+2. **CRON_SECRET** – Random string to secure the cron endpoint (Vercel sends it as `Authorization: Bearer <secret>`)
+
+Add both in Vercel → Settings → Environment Variables. Without `GROQ_API_KEY`, the cron does nothing. Without `CRON_SECRET` on Vercel, the endpoint returns 401.
+
+### Manual trigger
+
+You can call the endpoint manually (with the `Authorization: Bearer <CRON_SECRET>` header):
+
+```
+GET https://your-app.vercel.app/api/cron/generate-posts
+```
+
+---
+
 ## Local development
 
 Without `DATABASE_URL`, the app uses SQLite (file: `backend/fakefootball.db`). No changes needed for local dev.
