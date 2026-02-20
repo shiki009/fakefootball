@@ -1,5 +1,6 @@
 import { ref } from 'vue'
 
+const FP_KEY = 'vladfm_fp'
 const fp = ref(null)
 
 function generate() {
@@ -13,7 +14,6 @@ function generate() {
     new Date().getTimezoneOffset(),
   ].join('|')
 
-  // simple hash
   let hash = 0
   for (let i = 0; i < raw.length; i++) {
     const char = raw.charCodeAt(i)
@@ -25,7 +25,12 @@ function generate() {
 
 export function useFingerprint() {
   if (!fp.value) {
-    fp.value = generate()
+    try {
+      fp.value = localStorage.getItem(FP_KEY) || generate()
+      localStorage.setItem(FP_KEY, fp.value)
+    } catch {
+      fp.value = generate()
+    }
   }
   return fp
 }

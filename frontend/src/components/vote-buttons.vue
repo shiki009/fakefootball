@@ -13,23 +13,45 @@ const emit = defineEmits(['truth-updated'])
 const fp = useFingerprint()
 const score = ref(props.initialScore)
 const userVote = ref(0)
+const loading = ref(false)
 
 async function loadVote() {
+  if (!fp.value) return
   score.value = props.initialScore
-  const data = await api.getVote(props.postId, fp.value)
-  score.value = data.score
-  userVote.value = data.user_vote
+  try {
+    const data = await api.getVote(props.postId, fp.value)
+    score.value = data.score
+    userVote.value = data.user_vote
+  } catch {
+    // keep initial values on error
+  }
 }
 
 onMounted(loadVote)
 watch(() => props.postId, loadVote)
 
 async function castVote(value) {
+  if (!fp.value || loading.value) return
   const newValue = userVote.value === value ? 0 : value
-  const data = await api.vote(props.postId, fp.value, newValue)
-  score.value = data.score
-  userVote.value = data.user_vote
-  emit('truth-updated', data.truth_score)
+  const prevScore = score.value
+  const prevUserVote = userVote.value
+
+  // optimistic update
+  score.value = prevScore - prevUserVote + newValue
+  userVote.value = newValue
+  loading.value = true
+
+  try {
+    const data = await api.vote(props.postId, fp.value, newValue)
+    score.value = data.score
+    userVote.value = data.user_vote
+    emit('truth-updated', data.truth_score)
+  } catch {
+    score.value = prevScore
+    userVote.value = prevUserVote
+  } finally {
+    loading.value = false
+  }
 }
 </script>
 
@@ -37,11 +59,13 @@ async function castVote(value) {
   <div class="votes">
     <button
       :class="['vote-btn', 'up', { active: userVote === 1 }]"
+      :disabled="loading"
       @click.stop="castVote(1)"
     >▲</button>
     <span class="score" :class="{ positive: score > 0, negative: score < 0 }">{{ score }}</span>
     <button
       :class="['vote-btn', 'down', { active: userVote === -1 }]"
+      :disabled="loading"
       @click.stop="castVote(-1)"
     >▼</button>
   </div>
@@ -77,6 +101,11 @@ async function castVote(value) {
 
 .vote-btn.down.active {
   color: var(--downvote);
+}
+
+.vote-btn:disabled {
+  opacity: 0.6;
+  cursor: not-allowed;
 }
 
 .score {
