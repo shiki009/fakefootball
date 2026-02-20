@@ -2,20 +2,24 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "installCommand": "uv pip install --system -r requirements.txt && cd frontend && npm install",
   "outputDirectory": "frontend/dist",
+  "functions": {
+    "api/index.py": {
+      "region": "fra1",
+      "memory": 1024,
+      "maxDuration": 30
+    }
+  },
   "headers": [
     {
       "source": "/favicon.svg",
       "headers": [
-        { "key": "Cache-Control", "value": "public, max-age=86400" },
-        { "key": "Content-Type", "value": "image/svg+xml" }
+        {"key": "Cache-Control", "value": "public, max-age=86400"},
+        {"key": "Content-Type", "value": "image/svg+xml"}
       ]
     }
   ],
   "rewrites": [
-    { "source": "/api/:path*", "destination": "/api" },
-    {
-      "source": "/((?!api|assets|favicon\\.svg|index\\.html)[^.]*)",
-      "destination": "/index.html"
-    }
+    {"source": "/api/:path*", "destination": "/api"},
+    {"source": "/((?!api|assets|favicon\\.svg|index\\.html)[^.]*)", "destination": "/index.html"}
   ]
 }
