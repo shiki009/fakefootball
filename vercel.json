@@ -8,6 +8,11 @@
       "use": "@vercel/python"
     }
   ],
+  "functions": {
+    "index.py": {
+      "includeFiles": "frontend/dist/**"
+    }
+  },
   "routes": [
     {
       "src": "/(.*)",
