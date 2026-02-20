@@ -1,11 +1,22 @@
 {
+  "version": 2,
   "buildCommand": "cd frontend && npm install && npm run build",
   "installCommand": "uv pip install --system -r requirements.txt && cd frontend && npm install",
-  "outputDirectory": "frontend/dist",
-  "rewrites": [
+  "builds": [
     {
-      "source": "/((?!api|assets|favicon\\.svg|index\\.html).*)",
-      "destination": "/index.html"
+      "src": "index.py",
+      "use": "@vercel/python"
+    }
+  ],
+  "functions": {
+    "index.py": {
+      "includeFiles": "frontend/dist/**"
+    }
+  },
+  "routes": [
+    {
+      "src": "/(.*)",
+      "dest": "/index.py"
     }
   ]
 }
