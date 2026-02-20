@@ -7,6 +7,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
+from fastapi.staticfiles import StaticFiles
 
 from db import engine, session_local
 from models import Base
@@ -42,3 +43,8 @@ app.include_router(tags.router)
 app.include_router(stats.router)
 app.include_router(regulars.router)
 app.include_router(users.router)
+
+# Serve Vue SPA (built frontend) - mount last so /api routes take precedence
+_frontend_dist = os.path.join(os.path.dirname(__file__), "..", "frontend", "dist")
+if os.path.isdir(_frontend_dist):
+    app.mount("/", StaticFiles(directory=_frontend_dist, html=True), name="frontend")
