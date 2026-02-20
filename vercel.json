@@ -2,9 +2,9 @@
   "buildCommand": "cd frontend && npm install && npm run build",
   "installCommand": "uv pip install --system -r requirements.txt && cd frontend && npm install",
   "outputDirectory": "frontend/dist",
+  "regions": ["fra1"],
   "functions": {
     "api/index.py": {
-      "region": "fra1",
       "memory": 1024,
       "maxDuration": 30
     }
