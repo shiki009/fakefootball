@@ -1,6 +1,6 @@
 from fastapi import APIRouter, Depends, Query, HTTPException
 from sqlalchemy.orm import Session
-from sqlalchemy import func, select, desc
+from sqlalchemy import func, desc, outerjoin
 
 from db import get_db
 from models import Post, Vote, Comment
@@ -53,29 +53,40 @@ def list_posts(
     offset = (page - 1) * per_page
 
     if sort == "new":
-        q = q.order_by(desc(Post.created_at))
-        posts = q.offset(offset).limit(per_page).all()
-        items = _enrich(db, posts)
+        posts = q.order_by(desc(Post.created_at)).offset(offset).limit(per_page).all()
+
     elif sort == "top":
-        # sort by vote sum in DB
-        score_sub = (
-            select(Vote.post_id, func.coalesce(func.sum(Vote.value), 0).label("score"))
+        vote_sum = (
+            db.query(Vote.post_id, func.coalesce(func.sum(Vote.value), 0).label("score"))
             .group_by(Vote.post_id)
             .subquery()
         )
-        posts_all = q.all()
-        items = _enrich(db, posts_all)
-        items.sort(key=lambda x: x.score, reverse=True)
-        items = items[offset: offset + per_page]
+        posts = (
+            q.outerjoin(vote_sum, Post.id == vote_sum.c.post_id)
+            .order_by(desc(func.coalesce(vote_sum.c.score, 0)))
+            .offset(offset)
+            .limit(per_page)
+            .all()
+        )
+
     elif sort == "discussed":
-        posts_all = q.all()
-        items = _enrich(db, posts_all)
-        items.sort(key=lambda x: x.comment_count, reverse=True)
-        items = items[offset: offset + per_page]
+        comment_count = (
+            db.query(Comment.post_id, func.count(Comment.id).label("cnt"))
+            .group_by(Comment.post_id)
+            .subquery()
+        )
+        posts = (
+            q.outerjoin(comment_count, Post.id == comment_count.c.post_id)
+            .order_by(desc(func.coalesce(comment_count.c.cnt, 0)))
+            .offset(offset)
+            .limit(per_page)
+            .all()
+        )
+
     else:
         posts = q.offset(offset).limit(per_page).all()
-        items = _enrich(db, posts)
 
+    items = _enrich(db, posts)
     return paginated_posts(items=items, total=total, page=page, pages=pages)
 
 

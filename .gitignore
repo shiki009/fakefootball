@@ -6,6 +6,7 @@ dist/
 .env
 .env.local
 .DS_Store
+backend/user_comments.json
 
 # Vercel
 .vercel
