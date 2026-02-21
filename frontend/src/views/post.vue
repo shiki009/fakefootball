@@ -68,7 +68,8 @@ function share() {
             <span v-if="isTrueStory" class="true-badge">✓ true story</span>
           </h1>
           <div class="post-meta">
-            <router-link :to="authorLink(postsStore.currentPost.author_name)" class="author">{{ postsStore.currentPost.author_name }}</router-link>
+            <router-link v-if="authorLink(postsStore.currentPost.author_name)" :to="authorLink(postsStore.currentPost.author_name)" class="author">{{ postsStore.currentPost.author_name }}</router-link>
+            <span v-else class="author author-plain">{{ postsStore.currentPost.author_name }}</span>
             <span class="dot">·</span>
             <span>{{ useTimeAgo(postsStore.currentPost.created_at) }}</span>
             <span class="dot">·</span>
@@ -173,6 +174,11 @@ function share() {
 
 .author:hover {
   text-decoration: underline;
+}
+
+.author-plain {
+  cursor: default;
+  color: var(--text-muted);
 }
 
 .dot {

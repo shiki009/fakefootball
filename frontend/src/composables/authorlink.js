@@ -3,9 +3,13 @@ const REGULARS = new Set([
   'sass the spurs fan', 'viljandi tann', 'talis chelsea fan', 'shiki',
 ])
 
+export function isRegular(name) {
+  return REGULARS.has(name)
+}
+
 export function authorLink(name) {
   if (REGULARS.has(name)) {
     return `/regulars/${encodeURIComponent(name)}`
   }
-  return `/user/${encodeURIComponent(name)}`
+  return null
 }

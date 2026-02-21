@@ -59,7 +59,8 @@ function goToTag(slug) {
         <span v-if="isTrueStory" class="true-badge">✓ true story</span>
       </div>
       <div class="card-meta">
-        <router-link :to="authorLink(post.author_name)" class="author" @click.stop>{{ post.author_name }}</router-link>
+        <router-link v-if="authorLink(post.author_name)" :to="authorLink(post.author_name)" class="author" @click.stop>{{ post.author_name }}</router-link>
+        <span v-else class="author author-plain">{{ post.author_name }}</span>
         <span class="dot">·</span>
         <span class="time">{{ useTimeAgo(post.created_at) }}</span>
         <span class="dot">·</span>
@@ -144,6 +145,11 @@ function goToTag(slug) {
 
 .author:hover {
   text-decoration: underline;
+}
+
+.author-plain {
+  cursor: default;
+  color: var(--text-muted);
 }
 
 .dot {

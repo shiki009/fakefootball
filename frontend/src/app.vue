@@ -181,7 +181,7 @@ onMounted(async () => {
     grid-template-columns: 1fr;
   }
   .sidebar {
-    order: -1;
+    order: 1;
   }
 }
 </style>
