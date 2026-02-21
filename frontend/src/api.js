@@ -17,21 +17,6 @@ export default {
     return http.get(`/posts/${postId}/comments`).then(r => r.data)
   },
 
-  addComment(postId, authorName, content) {
-    return http.post(`/posts/${postId}/comments`, {
-      author_name: authorName,
-      content,
-    }).then(r => r.data)
-  },
-
-  vote(postId, fingerprint, value) {
-    return http.post(`/posts/${postId}/vote`, { fingerprint, value }).then(r => r.data)
-  },
-
-  getVote(postId, fingerprint) {
-    return http.get(`/posts/${postId}/vote`, { params: { fingerprint } }).then(r => r.data)
-  },
-
   getTags() {
     return http.get('/tags').then(r => r.data)
   },

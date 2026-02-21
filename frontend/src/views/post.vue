@@ -11,21 +11,12 @@ import loadingSpinner from '../components/loading-spinner.vue'
 const route = useRoute()
 const router = useRouter()
 const postsStore = usePostsStore()
-const truthScore = ref(0)
 const copied = ref(false)
 
-const isTrueStory = computed(() => truthScore.value >= 60)
-
-function onTruthUpdated(newScore) {
-  truthScore.value = newScore
-}
+const isTrueStory = computed(() => postsStore.currentPost?.truth_score >= 60)
 
 function load() {
-  postsStore.fetchPost(route.params.slug).then(() => {
-    if (postsStore.currentPost) {
-      truthScore.value = postsStore.currentPost.truth_score
-    }
-  })
+  postsStore.fetchPost(route.params.slug)
 }
 
 onMounted(load)
@@ -53,7 +44,6 @@ function share() {
         <voteButtons
           :postId="postsStore.currentPost.id"
           :initialScore="postsStore.currentPost.score"
-          @truth-updated="onTruthUpdated"
         />
         <div class="post-info">
           <h1 class="post-title">

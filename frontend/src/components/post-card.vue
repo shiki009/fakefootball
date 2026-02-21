@@ -10,12 +10,7 @@ const props = defineProps({
 })
 
 const router = useRouter()
-const truthScore = ref(props.post.truth_score)
 const copied = ref(false)
-
-function onTruthUpdated(newScore) {
-  truthScore.value = newScore
-}
 
 function share() {
   const url = `${window.location.origin}/post/${props.post.slug}`
@@ -24,10 +19,10 @@ function share() {
   setTimeout(() => { copied.value = false }, 1500)
 }
 
-const isTrueStory = computed(() => truthScore.value >= 60)
+const isTrueStory = computed(() => props.post.truth_score >= 60)
 
 const truthLabel = computed(() => {
-  const s = truthScore.value
+  const s = props.post.truth_score
   if (s >= 100) return 'confirmed true'
   if (s >= 60) return 'true story'
   if (s >= 40) return 'unverified'
@@ -36,7 +31,7 @@ const truthLabel = computed(() => {
 })
 
 const truthColor = computed(() => {
-  const s = truthScore.value
+  const s = props.post.truth_score
   if (s >= 60) return 'var(--green)'
   if (s >= 40) return '#f59e0b'
   return 'var(--text-muted)'
@@ -56,7 +51,7 @@ function goToTag(slug) {
     :class="['card', { 'true-story-glow': isTrueStory }]"
     @click="goToPost"
   >
-    <voteButtons :postId="post.id" :initialScore="post.score" @truth-updated="onTruthUpdated" />
+    <voteButtons :postId="post.id" :initialScore="post.score" />
     <div class="card-body">
       <div class="card-title">
         {{ post.title }}
@@ -73,9 +68,9 @@ function goToTag(slug) {
       </div>
       <div class="truth-meter">
         <div class="truth-bar">
-          <div class="truth-fill" :style="{ width: truthScore + '%', background: truthColor }"></div>
+          <div class="truth-fill" :style="{ width: post.truth_score + '%', background: truthColor }"></div>
         </div>
-        <span class="truth-label" :style="{ color: truthColor }">{{ truthLabel }} {{ truthScore }}%</span>
+        <span class="truth-label" :style="{ color: truthColor }">{{ truthLabel }} {{ post.truth_score }}%</span>
       </div>
       <div class="card-tags" v-if="post.tags.length">
         <tagBadge
