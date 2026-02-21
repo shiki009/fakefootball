@@ -1,4 +1,4 @@
-from fastapi import APIRouter, Depends, HTTPException
+from fastapi import APIRouter, Depends, HTTPException, Query
 from sqlalchemy.orm import Session
 from sqlalchemy import func
 
@@ -53,7 +53,7 @@ def cast_vote(post_id: int, body: vote_in, db: Session = Depends(get_db)):
 
 
 @router.get("/{post_id}/vote", response_model=vote_out)
-def get_vote(post_id: int, fingerprint: str = "", db: Session = Depends(get_db)):
+def get_vote(post_id: int, fingerprint: str = Query("", max_length=64), db: Session = Depends(get_db)):
     post = db.query(Post).filter(Post.id == post_id).first()
     if not post:
         raise HTTPException(404, "post not found")

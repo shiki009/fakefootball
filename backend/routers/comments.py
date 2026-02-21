@@ -25,7 +25,7 @@ def add_comment(post_id: int, body: comment_in, db: Session = Depends(get_db)):
 
     comment = Comment(
         post_id=post_id,
-        author_name=body.author_name or "anonymous",
+        author_name=body.author_name,
         content=body.content,
     )
     db.add(comment)

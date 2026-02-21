@@ -1,11 +1,7 @@
-import json
-import os
 from sqlalchemy.orm import Session
-from models import Base, Post, Tag, Comment, Vote, post_tags
+from models import Post, Tag, Comment, Vote
 from slugify import slugify
 from datetime import datetime, timezone, timedelta
-
-USER_COMMENTS_PATH = os.path.join(os.path.dirname(__file__), "user_comments.json")
 
 
 def run(db: Session):
@@ -744,21 +740,5 @@ def run(db: Session):
         p = posts[post_idx]
         p.truth_score = max(0, min(100, p.truth_score + net * 20))
 
-    # load user-submitted comments from JSON
-    try:
-        with open(USER_COMMENTS_PATH, "r") as f:
-            user_comments = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        user_comments = []
-
-    for uc in user_comments:
-        c = Comment(
-            post_id=uc["post_id"],
-            author_name=uc["author_name"],
-            content=uc["content"],
-            created_at=datetime.fromisoformat(uc["created_at"]),
-        )
-        db.add(c)
-
     db.commit()
-    print(f"db seeded ({len(user_comments)} user comments restored)")
+    print("db seeded")

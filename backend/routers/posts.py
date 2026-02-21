@@ -83,9 +83,6 @@ def list_posts(
             .all()
         )
 
-    else:
-        posts = q.offset(offset).limit(per_page).all()
-
     items = _enrich(db, posts)
     return paginated_posts(items=items, total=total, page=page, pages=pages)
 

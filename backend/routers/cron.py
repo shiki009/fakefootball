@@ -1,3 +1,4 @@
+import hmac
 import os
 from fastapi import APIRouter, Depends, HTTPException, Request
 from sqlalchemy.orm import Session
@@ -14,7 +15,8 @@ def _verify_cron_secret(request: Request) -> bool:
     auth = request.headers.get("Authorization", "")
     if not secret:
         return not os.environ.get("VERCEL")  # allow only in local dev
-    return auth == f"Bearer {secret}"
+    expected = f"Bearer {secret}"
+    return hmac.compare_digest(auth, expected)
 
 
 @router.get("/generate-posts")
