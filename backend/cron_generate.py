@@ -294,20 +294,19 @@ REAL FOOTBALL NEWS TODAY (use these as inspiration — spin them, exaggerate the
 Generate exactly {count} football news items. Mix plausible-sounding real stories with absurd fake ones.
 
 STYLE RULES — follow these exactly:
-- all lowercase (no capital letters except proper nouns like player/club names)
-- tabloid tone: punchy, specific, slightly dramatic
+- title: capitalise the first word and all proper nouns (player names, club names, countries). rest lowercase. specific and detailed, not vague (BAD: "Messi to City?" — GOOD: "Real Madrid pay Mbappé's mother €4.5M yearly in commissions — more than 7 first-team players")
+- content: sentence case — capitalise the first word of each sentence and all proper nouns. rest lowercase. tabloid tone: punchy, specific, slightly dramatic
 - include specific details: exact numbers (€4.5M, 3-4 months, 4 minutes 37 seconds), real player names, real clubs
 - include quotes from unnamed sources or the player/manager
 - 3-5 paragraphs per post, each paragraph 2-4 sentences
-- title: specific and detailed, not vague (BAD: "messi to city?" — GOOD: "Real Madrid pay Mbappé's mother €4.5M yearly in commissions — more than 7 first-team players")
 
 EXAMPLE OF GOOD CONTENT (copy this depth and style):
 Title: "VAR operator caught playing Candy Crush during penalty decision"
-Content: "a leaked screenshot from the VAR booth during yesterday's Lazio — Genoa match shows the lead operator mid-game on Candy Crush Saga (level 4,281) while a crucial penalty decision was being reviewed. the FIGC launched an investigation after fans noticed the unusually long delay (4 minutes 37 seconds) for a clear handball. \\"he was on a streak, couldn't stop,\\" an anonymous colleague confirmed."
+Content: "A leaked screenshot from the VAR booth during yesterday's Lazio — Genoa match shows the lead operator mid-game on Candy Crush Saga (level 4,281) while a crucial penalty decision was being reviewed. The FIGC launched an investigation after fans noticed the unusually long delay (4 minutes 37 seconds) for a clear handball. \\"He was on a streak, couldn't stop,\\" an anonymous colleague confirmed."
 
 EXAMPLE 2:
 Title: "Kounde will listen to the entire Kendrick Lamar discography as alternative treatment for his injury"
-Content: "Barcelona defender Jules Kounde suffered a hamstring injury during yesterday's away Copa del Rey match against Elche and is now reportedly exploring unconventional recovery methods. according to sources inside the Barca medical staff, Kounde has requested permission to undergo 'sonic therapy' — which consists of listening to the complete Kendrick Lamar discography on repeat, starting from Section.80 through to GNX, at full volume in the recovery room. \\"the vibrations from HUMBLE. alone target the hamstring fibers directly,\\" Kounde told the medical team. the physiotherapists are reportedly skeptical but 'willing to try anything at this point.' teammates have asked him to use headphones."
+Content: "Barcelona defender Jules Kounde suffered a hamstring injury during yesterday's away Copa del Rey match against Elche and is now reportedly exploring unconventional recovery methods. According to sources inside the Barca medical staff, Kounde has requested permission to undergo 'sonic therapy' — which consists of listening to the complete Kendrick Lamar discography on repeat, starting from Section.80 through to GNX, at full volume in the recovery room. \\"The vibrations from HUMBLE. alone target the hamstring fibers directly,\\" Kounde told the medical team. The physiotherapists are reportedly skeptical but 'willing to try anything at this point.' Teammates have asked him to use headphones."
 
 For each item output a JSON object with:
 - "title": specific, detailed headline (max 120 chars)
