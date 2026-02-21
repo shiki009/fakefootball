@@ -34,6 +34,7 @@ function goHome() {
         <span class="logo-text">{{ siteName }}</span>
       </div>
       <div class="header-right">
+        <router-link to="/regulars" class="about-link">regulars</router-link>
         <router-link to="/sponsor" class="about-link">sponsor</router-link>
         <router-link to="/about" class="about-link">about</router-link>
         <div class="tagline">the news that never happened</div>

@@ -92,7 +92,7 @@ onBeforeUnmount(() => {
           <span class="feature-icon">✓</span>
           <div>
             <div class="feature-title">trusted by regulars</div>
-            <div class="feature-desc">shiki has never doubted a single story</div>
+            <div class="feature-desc">shiki has never doubted a single story — <router-link to="/regulars" class="inline-link">meet them</router-link></div>
           </div>
         </div>
         <div class="feature">
@@ -251,5 +251,14 @@ onBeforeUnmount(() => {
 .feature-desc {
   font-size: 0.75rem;
   color: var(--text-muted);
+}
+
+.inline-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.inline-link:hover {
+  text-decoration: underline;
 }
 </style>

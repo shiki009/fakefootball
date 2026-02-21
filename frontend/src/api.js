@@ -29,6 +29,10 @@ export default {
     return http.get('/regulars').then(r => r.data)
   },
 
+  getRegular(name) {
+    return http.get(`/regulars/${encodeURIComponent(name)}`).then(r => r.data)
+  },
+
   getUserProfile(username) {
     return http.get(`/users/${encodeURIComponent(username)}`).then(r => r.data)
   },

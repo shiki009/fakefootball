@@ -11,12 +11,15 @@ onMounted(async () => {
 
 <template>
   <div class="widget" v-if="regulars.length">
-    <div class="widget-title">regulars</div>
+    <div class="widget-header">
+      <div class="widget-title">regulars</div>
+      <router-link to="/regulars" class="see-all">see all →</router-link>
+    </div>
     <div class="regulars-list">
       <div v-for="(r, i) in regulars" :key="r.name" class="regular">
         <span class="rank">{{ i + 1 }}.</span>
-        <router-link :to="`/user/${encodeURIComponent(r.name)}`" class="name">{{ r.name }}</router-link>
-        <span class="count">{{ r.comments }} <span class="label">comments</span></span>
+        <router-link :to="`/regulars/${encodeURIComponent(r.name)}`" class="name">{{ r.name }}</router-link>
+        <span class="count">{{ r.comments }} <span class="label">cmts</span></span>
       </div>
     </div>
   </div>
@@ -30,13 +33,32 @@ onMounted(async () => {
   padding: 1rem;
 }
 
+.widget-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
 .widget-title {
   font-family: var(--font-mono);
   font-size: 0.8rem;
   font-weight: 600;
   color: var(--text-muted);
   text-transform: lowercase;
-  margin-bottom: 0.75rem;
+}
+
+.see-all {
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--accent);
+  text-decoration: none;
+  opacity: 0.7;
+  transition: opacity 0.15s ease;
+}
+
+.see-all:hover {
+  opacity: 1;
 }
 
 .regulars-list {
