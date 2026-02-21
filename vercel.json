@@ -22,10 +22,17 @@
         {"key": "Cache-Control", "value": "public, max-age=86400"},
         {"key": "Content-Type", "value": "image/svg+xml"}
       ]
+    },
+    {
+      "source": "/favicon.ico",
+      "headers": [
+        {"key": "Cache-Control", "value": "public, max-age=86400"},
+        {"key": "Content-Type", "value": "image/x-icon"}
+      ]
     }
   ],
   "rewrites": [
     {"source": "/api/:path*", "destination": "/api"},
-    {"source": "/((?!api|assets|favicon\\.svg|index\\.html)[^.]*)", "destination": "/index.html"}
+    {"source": "/((?!api|assets|favicon\\.svg|favicon\\.ico|index\\.html)[^.]*)", "destination": "/index.html"}
   ]
 }
