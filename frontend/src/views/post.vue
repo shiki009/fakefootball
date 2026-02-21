@@ -3,6 +3,7 @@ import { onMounted, watch, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { usePostsStore } from '../stores/posts.js'
 import { useTimeAgo } from '../composables/timeago.js'
+import { authorLink } from '../composables/authorlink.js'
 import voteButtons from '../components/vote-buttons.vue'
 import tagBadge from '../components/tag-badge.vue'
 import commentList from '../components/comment-list.vue'
@@ -14,6 +15,22 @@ const postsStore = usePostsStore()
 const copied = ref(false)
 
 const isTrueStory = computed(() => postsStore.currentPost?.truth_score >= 60)
+
+const truthLabel = computed(() => {
+  const s = postsStore.currentPost?.truth_score ?? 0
+  if (s >= 100) return 'confirmed true'
+  if (s >= 60) return 'true story'
+  if (s >= 40) return 'unverified'
+  if (s >= 20) return 'doubtful'
+  return 'fake'
+})
+
+const truthColor = computed(() => {
+  const s = postsStore.currentPost?.truth_score ?? 0
+  if (s >= 60) return 'var(--green)'
+  if (s >= 40) return '#f59e0b'
+  return 'var(--text-muted)'
+})
 
 function load() {
   postsStore.fetchPost(route.params.slug)
@@ -51,7 +68,7 @@ function share() {
             <span v-if="isTrueStory" class="true-badge">✓ true story</span>
           </h1>
           <div class="post-meta">
-            <router-link :to="`/user/${encodeURIComponent(postsStore.currentPost.author_name)}`" class="author">{{ postsStore.currentPost.author_name }}</router-link>
+            <router-link :to="authorLink(postsStore.currentPost.author_name)" class="author">{{ postsStore.currentPost.author_name }}</router-link>
             <span class="dot">·</span>
             <span>{{ useTimeAgo(postsStore.currentPost.created_at) }}</span>
             <span class="dot">·</span>
@@ -65,10 +82,18 @@ function share() {
               @click="goToTag(t.slug)"
             />
           </div>
+          <div class="truth-meter">
+            <div class="truth-bar">
+              <div class="truth-fill" :style="{ width: postsStore.currentPost.truth_score + '%', background: truthColor }"></div>
+            </div>
+            <span class="truth-label" :style="{ color: truthColor }">{{ truthLabel }} {{ postsStore.currentPost.truth_score }}%</span>
+          </div>
         </div>
       </div>
 
-      <div class="post-content">{{ postsStore.currentPost.content }}</div>
+      <div class="post-content">
+        <p v-for="(para, i) in postsStore.currentPost.content.split(/\n\n+/)" :key="i">{{ para }}</p>
+      </div>
     </article>
 
     <commentList
@@ -171,12 +196,48 @@ function share() {
   flex-wrap: wrap;
 }
 
+.truth-meter {
+  display: flex;
+  align-items: center;
+  gap: 0.5rem;
+  margin-top: 0.5rem;
+}
+
+.truth-bar {
+  flex: 1;
+  height: 4px;
+  background: var(--border);
+  border-radius: 2px;
+  max-width: 80px;
+  overflow: hidden;
+}
+
+.truth-fill {
+  height: 100%;
+  border-radius: 2px;
+  transition: width 0.3s ease;
+}
+
+.truth-label {
+  font-family: var(--font-mono);
+  font-size: 0.65rem;
+  font-weight: 500;
+  white-space: nowrap;
+}
+
 .post-content {
   font-size: 0.9rem;
   line-height: 1.7;
   color: var(--text);
   padding-top: 1rem;
   border-top: 1px solid var(--border);
+  display: flex;
+  flex-direction: column;
+  gap: 0.9rem;
+}
+
+.post-content p {
+  margin: 0;
 }
 
 .comments-block {

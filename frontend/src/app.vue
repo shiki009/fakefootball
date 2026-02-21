@@ -17,7 +17,7 @@ onMounted(async () => {
     tagsStore.fetchTags(),
     statsStore.fetchStats(),
   ])
-  setTimeout(() => { loading.value = false }, 1500)
+  loading.value = false
 })
 </script>
 

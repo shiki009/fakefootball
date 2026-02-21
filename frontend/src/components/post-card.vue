@@ -2,6 +2,7 @@
 import { computed, ref } from 'vue'
 import { useRouter } from 'vue-router'
 import { useTimeAgo } from '../composables/timeago.js'
+import { authorLink } from '../composables/authorlink.js'
 import voteButtons from './vote-buttons.vue'
 import tagBadge from './tag-badge.vue'
 
@@ -58,7 +59,7 @@ function goToTag(slug) {
         <span v-if="isTrueStory" class="true-badge">✓ true story</span>
       </div>
       <div class="card-meta">
-        <router-link :to="`/user/${encodeURIComponent(post.author_name)}`" class="author" @click.stop>{{ post.author_name }}</router-link>
+        <router-link :to="authorLink(post.author_name)" class="author" @click.stop>{{ post.author_name }}</router-link>
         <span class="dot">·</span>
         <span class="time">{{ useTimeAgo(post.created_at) }}</span>
         <span class="dot">·</span>

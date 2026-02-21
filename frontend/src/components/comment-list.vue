@@ -2,6 +2,7 @@
 import { ref, watch, onMounted } from 'vue'
 import api from '../api.js'
 import { useTimeAgo } from '../composables/timeago.js'
+import { authorLink } from '../composables/authorlink.js'
 
 const props = defineProps({
   postId: { type: Number, required: true },
@@ -24,7 +25,7 @@ watch(() => props.postId, loadComments)
     <div class="comment-list">
       <div v-for="c in comments" :key="c.id" class="comment">
         <div class="comment-meta">
-          <router-link :to="`/user/${encodeURIComponent(c.author_name)}`" class="comment-author" @click.stop>{{ c.author_name }}</router-link>
+          <router-link :to="authorLink(c.author_name)" class="comment-author" @click.stop>{{ c.author_name }}</router-link>
           <span class="dot">·</span>
           <span class="comment-time">{{ useTimeAgo(c.created_at) }}</span>
         </div>
