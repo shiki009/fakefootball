@@ -7,6 +7,7 @@ const tabs = [
   { key: 'new', label: 'new' },
   { key: 'top', label: 'top' },
   { key: 'discussed', label: 'discussed' },
+  { key: 'controversial', label: 'controversial' },
 ]
 </script>
 

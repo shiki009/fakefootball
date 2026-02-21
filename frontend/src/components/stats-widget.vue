@@ -6,9 +6,10 @@ const statsStore = useStatsStore()
 </script>
 
 <template>
-  <div class="widget" v-if="statsStore.stats">
+  <div class="widget" v-if="statsStore.stats || statsStore.error">
     <div class="widget-title">stats</div>
-    <div class="stat-grid">
+    <div v-if="statsStore.error" class="widget-error">couldn't load</div>
+    <div v-else class="stat-grid">
       <div class="stat">
         <span class="stat-val">{{ statsStore.stats.total_posts }}</span>
         <span class="stat-label">posts</span>
@@ -26,7 +27,7 @@ const statsStore = useStatsStore()
         <span class="stat-label">tags</span>
       </div>
     </div>
-    <div class="last-updated" v-if="statsStore.stats.last_post_at">
+    <div class="last-updated" v-if="statsStore.stats && statsStore.stats.last_post_at">
       last post {{ useTimeAgo(statsStore.stats.last_post_at) }}
     </div>
   </div>
@@ -80,5 +81,14 @@ const statsStore = useStatsStore()
   font-size: 0.7rem;
   color: var(--text-muted);
   opacity: 0.7;
+}
+
+.widget-error {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  text-align: center;
+  padding: 0.5rem 0;
 }
 </style>

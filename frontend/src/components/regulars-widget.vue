@@ -3,19 +3,25 @@ import { ref, onMounted } from 'vue'
 import api from '../api.js'
 
 const regulars = ref([])
+const error = ref(false)
 
 onMounted(async () => {
-  regulars.value = await api.getRegulars()
+  try {
+    regulars.value = await api.getRegulars()
+  } catch {
+    error.value = true
+  }
 })
 </script>
 
 <template>
-  <div class="widget" v-if="regulars.length">
+  <div class="widget" v-if="regulars.length || error">
     <div class="widget-header">
       <div class="widget-title">regulars</div>
       <router-link to="/regulars" class="see-all">see all →</router-link>
     </div>
-    <div class="regulars-list">
+    <div v-if="error" class="widget-error">couldn't load</div>
+    <div v-else class="regulars-list">
       <div v-for="(r, i) in regulars" :key="r.name" class="regular">
         <span class="rank">{{ i + 1 }}.</span>
         <router-link :to="`/regulars/${encodeURIComponent(r.name)}`" class="name">{{ r.name }}</router-link>
@@ -24,6 +30,7 @@ onMounted(async () => {
     </div>
   </div>
 </template>
+
 
 <style scoped>
 .widget {
@@ -105,5 +112,14 @@ onMounted(async () => {
 
 .label {
   opacity: 0.6;
+}
+
+.widget-error {
+  font-family: var(--font-mono);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  opacity: 0.5;
+  text-align: center;
+  padding: 0.5rem 0;
 }
 </style>

@@ -4,10 +4,15 @@ import api from '../api.js'
 
 export const useStatsStore = defineStore('stats', () => {
   const stats = ref(null)
+  const error = ref(false)
 
   async function fetchStats() {
-    stats.value = await api.getStats()
+    try {
+      stats.value = await api.getStats()
+    } catch {
+      error.value = true
+    }
   }
 
-  return { stats, fetchStats }
+  return { stats, error, fetchStats }
 })

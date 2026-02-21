@@ -406,6 +406,235 @@ def run(db: Session):
             "tags": ["Transfer", "True Story", "Stats"],
             "created_at": datetime(2026, 2, 7, 20, 0, tzinfo=timezone.utc),
         },
+        # --- week of Feb 8-14 ---
+        {
+            "title": "Ancelotti confirmed as Brazil manager — starts after Champions League",
+            "content": (
+                "Carlo Ancelotti has officially confirmed he will take charge of the Brazilian national team "
+                "at the end of the season, once Real Madrid's Champions League campaign concludes. "
+                "the Italian manager signed a deal with the CBF in January, and the announcement was made "
+                "jointly by Real Madrid and the Brazilian federation on Friday. "
+                "Ancelotti will manage Madrid through the final and then transition to Brazil ahead of "
+                "the 2026 World Cup. the CBF described it as 'the most important signing in Brazilian "
+                "football history.' Real Madrid have not yet named a successor."
+            ),
+            "author_name": "ucl_insider",
+            "is_true_story": True,
+            "truth_score": 0,
+            "tags": ["Coaching", "True Story", "Breaking"],
+            "created_at": datetime(2026, 2, 8, 10, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Gavi's agent reveals he sleeps exactly 11 hours a night — 'it's the secret'",
+            "content": (
+                "Pablo Martín Páez Gavira's representative has told Mundo Deportivo that the Barcelona "
+                "midfielder sleeps exactly 11 hours every night, going to bed at 9pm and waking at 8am. "
+                "'he has done this since he was 14,' the agent said. 'the other players sleep 8 hours "
+                "and wonder why they can't keep up with him in the second half.' "
+                "Gavi himself confirmed the habit in a separate interview, adding that he also naps "
+                "for 40 minutes after lunch. teammates have reportedly started copying the schedule "
+                "with mixed results — Kounde tried it and slept through a training session."
+            ),
+            "author_name": "barca_leaks",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Stats", "Absurd"],
+            "created_at": datetime(2026, 2, 9, 11, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Guardiola admits he watches every Pep Lijnders press conference to steal ideas",
+            "content": (
+                "in a candid interview with The Athletic, Pep Guardiola admitted that he regularly "
+                "watches press conferences given by Pep Lijnders — the former Liverpool assistant "
+                "now managing Salzburg — to pick up tactical ideas. "
+                "'he thinks differently. I watch him like I watch film,' Guardiola said. "
+                "Lijnders was reportedly informed of this and responded: 'I learned everything from "
+                "watching Pep. so we are watching each other.' "
+                "Jürgen Klopp, reached for comment, said: 'this is the most Pep thing I have ever heard.'"
+            ),
+            "author_name": "the_athletic_leak",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Coaching", "Absurd"],
+            "created_at": datetime(2026, 2, 10, 14, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Vinicius Jr. to be offered lifetime contract by Real Madrid — no release clause",
+            "content": (
+                "Real Madrid are preparing a lifetime contract offer for Vinicius Jr. that would keep "
+                "him at the club beyond his playing career in an ambassadorial role. "
+                "the deal, reported by Marca, would include no release clause and a salary structure "
+                "that increases every two years regardless of performance. "
+                "the club views Vinicius as the face of the next decade and wants to prevent any "
+                "Saudi or Premier League interest from even starting. "
+                "Vinicius's camp have not officially responded but sources say the player is 'flattered "
+                "and open to the idea.'"
+            ),
+            "author_name": "marca_alert",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Transfer", "Breaking"],
+            "created_at": datetime(2026, 2, 11, 9, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Liverpool's Slot admits he has never watched a full Klopp press conference — 'too emotional'",
+            "content": (
+                "Arne Slot revealed in a Dutch interview that he has deliberately avoided watching "
+                "Jürgen Klopp's Liverpool press conferences in full. "
+                "'I started one and had to stop after ten minutes. it was too much,' Slot said. "
+                "'the man is a force of nature. if I watch too much I start speaking like him "
+                "and my players get confused.' "
+                "Slot added that he has watched every Klopp Dortmund press conference from 2011-2015 "
+                "and considers them 'the best coaching content ever made.' "
+                "Klopp, now at Red Bull, reportedly laughed when told about this."
+            ),
+            "author_name": "eredivisie_insider",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Coaching", "Absurd"],
+            "created_at": datetime(2026, 2, 12, 16, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Dani Olmo's registration saga: Barcelona finally cleared by LaLiga after third appeal",
+            "content": (
+                "Barcelona have been cleared to register Dani Olmo and Pau Víctor for the remainder "
+                "of the season after LaLiga accepted the club's third financial fair play submission. "
+                "the saga, which began in January when the players were initially deregistered, "
+                "ended after Barcelona presented revised salary cap calculations based on "
+                "projected commercial income from the Spotify Camp Nou reopening. "
+                "Olmo, who had been training but unable to play, is expected to return to the squad "
+                "for the weekend fixture. the club issued a brief statement: 'finally.'"
+            ),
+            "author_name": "laliga_watch",
+            "is_true_story": True,
+            "truth_score": 0,
+            "tags": ["Breaking", "True Story"],
+            "created_at": datetime(2026, 2, 13, 12, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Tottenham scouting 14-year-old prodigy from Tallinn — 'the next Modric'",
+            "content": (
+                "Tottenham Hotspur's scouting department has identified a 14-year-old midfielder "
+                "from FC Flora Tallinn academy, described internally as 'the next Modric' in a "
+                "leaked scouting report. the player, whose name has not been released, "
+                "reportedly has a 94% pass completion rate in Estonian youth football and "
+                "'reads the game like a 30-year-old.' "
+                "Spurs have sent scouts to three consecutive matches and are believed to be "
+                "preparing an initial offer. Flora Tallinn have not commented. "
+                "the player's mother told a local newspaper: 'he just likes football.'"
+            ),
+            "author_name": "spurs_scout_watch",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Transfer", "Breaking"],
+            "created_at": datetime(2026, 2, 14, 10, 0, tzinfo=timezone.utc),
+        },
+        # --- week of Feb 15-18 ---
+        {
+            "title": "Mbappé photographed leaving a McDonald's in Madrid at 2am — club investigating",
+            "content": (
+                "Kylian Mbappé was photographed leaving a McDonald's in the Salamanca district of Madrid "
+                "at approximately 2:15am on Thursday night, just 36 hours before Real Madrid's "
+                "La Liga fixture against Getafe. "
+                "the photos, published by El Confidencial, show Mbappé in a cap and tracksuit "
+                "carrying two large bags. a club source confirmed Real Madrid are 'aware of the images' "
+                "and are 'looking into the matter.' "
+                "Mbappé's camp said the player was 'getting food for the whole floor of his building.' "
+                "he scored twice against Getafe."
+            ),
+            "author_name": "el_confidencial_tip",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Breaking", "Absurd"],
+            "created_at": datetime(2026, 2, 15, 9, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Raphinha wins FIFA Best — Barca fans celebrate, rest of world confused",
+            "content": (
+                "Raphinha has been named FIFA Best Men's Player for 2025, beating Vinicius Jr. "
+                "and Erling Haaland in the final vote. the Brazilian winger, who had 31 goals "
+                "and 18 assists in all competitions for Barcelona last season, received the award "
+                "at a ceremony in Zurich. "
+                "Barcelona fans erupted on social media. the rest of the football world spent "
+                "approximately four hours debating whether this was correct. "
+                "Vinicius posted a single emoji. Haaland posted nothing. "
+                "Raphinha cried during his speech and thanked his family, his teammates, "
+                "and 'everyone who doubted me — especially in 2022.'"
+            ),
+            "author_name": "fifa_ceremony",
+            "is_true_story": True,
+            "truth_score": 0,
+            "tags": ["True Story", "Breaking", "Stats"],
+            "created_at": datetime(2026, 2, 15, 20, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Mourinho claims he invented the low block in 1998 — 'nobody was doing it before me'",
+            "content": (
+                "José Mourinho, speaking at a coaching conference in Dubai, claimed that he invented "
+                "the low defensive block as a tactical concept in 1998 while working as Bobby Robson's "
+                "assistant at Barcelona. "
+                "'nobody was doing it. I drew it on a napkin. Robson looked at it and said: José, "
+                "this is either genius or madness. I said: both,' Mourinho told the audience. "
+                "tactical historians immediately pointed out that catenaccio had existed since the 1950s. "
+                "Mourinho responded: 'catenaccio is Italian. mine was Portuguese. completely different.'"
+            ),
+            "author_name": "coaching_conf_leak",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Coaching", "Absurd"],
+            "created_at": datetime(2026, 2, 16, 11, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Barça medical team confirms Pedri has 'perfect knee geometry' — never seen before",
+            "content": (
+                "Barcelona's medical staff have released an unusual statement praising the anatomical "
+                "structure of Pedri's knees, describing them as having 'perfect geometry' that "
+                "significantly reduces injury risk when healthy. "
+                "'we have never seen a knee this well-proportioned in 20 years of practice,' "
+                "said Dr. Ramón Cugat, the club's head of sports medicine. "
+                "'the problem is everything around the knee — the muscles, the tendons, the schedule.' "
+                "Pedri was reportedly shown the statement and responded: 'please stop talking about my knees.'"
+            ),
+            "author_name": "barca_medical",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Stats", "Absurd"],
+            "created_at": datetime(2026, 2, 17, 10, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Arsenal close to signing Mikel Merino's brother — 'different player, same surname'",
+            "content": (
+                "Arsenal are close to signing Iker Merino, the younger brother of their own midfielder "
+                "Mikel Merino, from Real Sociedad's B team. "
+                "the 19-year-old defensive midfielder has reportedly impressed Mikel Arteta in training "
+                "sessions arranged informally by his brother. "
+                "'Iker is a different player,' Mikel Merino told reporters. 'I play with elegance. "
+                "he plays like he's trying to break something.' "
+                "Arsenal have not confirmed the interest but Fabrizio Romano posted a single word: 'here.'"
+            ),
+            "author_name": "arsenal_central",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Transfer", "Absurd"],
+            "created_at": datetime(2026, 2, 18, 9, 0, tzinfo=timezone.utc),
+        },
+        {
+            "title": "Chelsea sign 7th midfielder of the season — Boehly: 'we like options'",
+            "content": (
+                "Chelsea have completed the signing of Lazar Samardžić from Udinese for €35 million, "
+                "making him the club's seventh central midfielder signed since Todd Boehly's takeover. "
+                "the club now has 11 midfielders registered in the first-team squad. "
+                "when asked about the strategy, Boehly told Sky Sports: 'we like options. "
+                "football is a game of options.' "
+                "Enzo Maresca has reportedly asked for a whiteboard large enough to fit all their names. "
+                "Samardžić said he was 'excited to compete for a place' and 'aware of the situation.'"
+            ),
+            "author_name": "transfer_watch",
+            "is_true_story": False,
+            "truth_score": 0,
+            "tags": ["Transfer", "Absurd"],
+            "created_at": datetime(2026, 2, 18, 15, 0, tzinfo=timezone.utc),
+        },
     ]
 
     now = datetime.now(timezone.utc)
@@ -714,6 +943,113 @@ def run(db: Session):
         (21, "viljandi tann", "checked with Kolodin at lunch — Lamari's commission is higher than the GDP per capita of most countries. also Lamari could be an Estonian name, just saying"),
         (21, "shiki", "my source at vladFM has been saying for months that the Mbappé deal was way more expensive than reported. €4.5M is actually the reduced number, the original ask was closer to €7M. Fayza runs the whole operation"),
         (21, "talis chelsea fan", "this is what happens when you don't have a proper procurement process. at Karl Storz we'd never sign off on commission fees like this without a full cost-benefit analysis"),
+
+        # 22 - Ancelotti to Brazil
+        (22, "Kolodin", "Ancelotti is the only man who could walk into Brazil and not get eaten alive. calm, won everything, doesn't need to prove anything. this is either the best idea in football or the end of samba — no middle ground"),
+        (22, "maroco", "genuinely one of the most exciting coaching appointments in years. Ancelotti doesn't overcomplicate things, he just creates an environment where talent expresses itself. Brazil have enough quality to win a World Cup if someone just gets out of the way"),
+        (22, "viljandi tann", "Klopp to Red Bull, Ancelotti to Brazil — the world is changing. I just hope Liverpool get someone who believes in heavy metal football and not whatever Slot is building"),
+        (22, "The real CR7", "Ancelotti leaving Madrid is the only medical diagnosis I can't accept. but Brazil? the man deserves a World Cup. his cortisol levels must be through the roof with excitement"),
+        (22, "kris", "the interesting thing about Ancelotti is he's the only manager who consistently gets more from players than their xG suggests. that's not tactics, that's something else. Brazil will be fascinating"),
+        (22, "shiki", "my source confirmed this three weeks ago before it was official. Ancelotti has been learning Portuguese since October. the CBF deal was done in December. the 'after Champions League' framing is just PR — he's mentally already there"),
+
+        # 23 - Gavi sleeps 11 hours
+        (23, "The real CR7", "11 hours of sleep is clinically excessive for a healthy adult. as a doctor I'm concerned. also explains why he's always late to press conferences and why his first touch takes 0.3 seconds longer than normal"),
+        (23, "maroco", "I don't care how he sleeps as long as he plays like he did in the first half against Benfica. the man is back. also CR7 you're not his doctor, stop diagnosing Barca players"),
+        (23, "The real CR7", "maroco I literally am a doctor. I can diagnose anyone I want"),
+        (23, "kris", "sleep is genuinely the most underrated performance variable in elite sport. 11 hours is unusual but the research is clear — more is almost always better for recovery and cognitive function. Gavi is essentially doing what the science says"),
+        (23, "Kolodin", "Figo slept 6 hours, won the Ballon d'Or, and had better hair. next"),
+        (23, "shiki", "Kounde tried this and slept through training — that's not a side effect, that's the universe correcting itself. also I've heard from someone close to the squad that Gavi actually sleeps 12 hours, the agent rounded down to sound less weird"),
+
+        # 24 - Guardiola watches Lijnders
+        (24, "leo", "two coaches watching each other's press conferences trying to steal ideas is the most football thing I've ever heard. like two sound engineers sitting in each other's sessions and pretending they're just visiting"),
+        (24, "Kolodin", "Guardiola stealing ideas from a Salzburg manager. the fall from grace continues. Ancelotti never needed to watch anyone"),
+        (24, "maroco", "Kolodin that's not a fall from grace, that's how the best coaches work. Pep has always been obsessive about learning. the ones who stop are the ones who get sacked after three bad seasons"),
+        (24, "sass the spurs fan", "at Spurs our manager is probably watching old Mourinho press conferences and taking notes on how to blame the players when it goes wrong"),
+        (24, "leo", "sass that's the most accurate thing you've said all week"),
+        (24, "shiki", "Lijnders and Guardiola have been exchanging voice notes since 2023. I have a source in the Red Bull system. this is way deeper than one press conference anecdote — there's a whole tactical exchange happening"),
+
+        # 25 - Vinicius lifetime contract
+        (25, "Kolodin", "no release clause is the only smart move here. Saudi money is real, Premier League money is real, and Madrid can't afford to lose him the way they lost Ronaldo. lock it down"),
+        (25, "maroco", "lifetime contracts in football are almost always a mistake. what happens when he's 32 and declining? you can't build a squad around sentiment. Barca learned this the hard way with Messi"),
+        (25, "The real CR7", "Vinicius is the heir to the Bernabéu throne. give him the lifetime deal, the statue, the street name, the documentary. do it now before someone writes a bigger cheque"),
+        (25, "kris", "maroco raises a fair point but the Benzema image rights model shows there are creative ways to structure these deals. you can have loyalty without locking in a fixed salary forever"),
+        (25, "maroco", "kris fair point. if it's structured like Benzema's deal then it's different. I'm against the sentimental version, not the smart version"),
+        (25, "shiki", "this is already done. the announcement is being held until after the Champions League final for maximum impact. my source at the club is very clear. the contract is signed, the press conference is scheduled"),
+
+        # 26 - Slot avoids Klopp press conferences
+        (26, "viljandi tann", "Slot is right to protect himself. watching Klopp is like watching the sun — you can't do it directly for too long. I miss him every single day and I'm not even ashamed to say it"),
+        (26, "maroco", "this is actually smart man management of yourself. Slot knows his identity and doesn't want to be contaminated by someone else's charisma. most coaches would just copy and look like a bad imitation"),
+        (26, "Kolodin", "Slot is a decent manager but comparing him to Klopp is like comparing Benzema to whoever plays for Salzburg now. technically present, emotionally absent"),
+        (26, "leo", "the bit about starting to speak like Klopp is so real. I once watched three hours of his pressers in a row and started gesturing with both hands during a film edit. my director asked if I was okay"),
+        (26, "viljandi tann", "leo that's the most relatable thing anyone has said on this site"),
+        (26, "shiki", "Slot actually has a folder of Klopp clips he watches before big games. the 'too emotional' thing is a cover story. my source at Melwood confirmed this last week. the folder is called 'reference material'"),
+
+        # 27 - Dani Olmo registration
+        (27, "maroco", "finally. the whole saga was embarrassing for everyone involved — LaLiga, the courts, the club, the player. just let the man play football. he's been training for weeks watching his teammates from the stands"),
+        (27, "kris", "the financial fair play system is so broken that a club can't register a player they already paid for. this is like a particle being in two quantum states at once — legally registered and legally not. Schrödinger's footballer"),
+        (27, "talis chelsea fan", "Chelsea have spent more than Barca over the last three years and never had a registration issue. different kind of financial chaos but at least our players can play"),
+        (27, "Kolodin", "LaLiga protecting their product or protecting their rules? both, probably. but Olmo is good enough that it's worth the fight. he's the kind of player who changes games"),
+        (27, "maroco", "kris 'Schrödinger's footballer' is the best description of this whole saga. I'm using that"),
+        (27, "shiki", "the third appeal was approved because of a clause that LaLiga tried to bury in the 2024 regulations. my source in the legal team flagged it weeks ago. Barca knew exactly what they were doing from the start"),
+
+        # 28 - Spurs scouting Tallinn prodigy
+        (28, "viljandi tann", "a player from Tallinn? I'm claiming him immediately. doesn't matter what position, what age, what club. Estonian football is finally getting the recognition it deserves and I will not be calm about it"),
+        (28, "sass the spurs fan", "Spurs scouting a 14-year-old from Tallinn while we can't keep our 28-year-olds fit for more than three games. the priorities are genuinely something"),
+        (28, "Kolodin", "Flora Tallinn academy is actually decent. I've seen their data at Sportsradar. the pass completion stat is completely believable for that level. don't laugh at this one"),
+        (28, "maroco", "'the next Modric' is the most overused phrase in football scouting. every technically gifted midfielder from a smaller country gets this label. let the kid develop without the pressure"),
+        (28, "viljandi tann", "Kolodin backing an Estonian player. I never thought I'd see the day. this is historic"),
+        (28, "shiki", "I know exactly who this is. he played in the vladFM youth tournament two years ago. I have the footage on my phone. the Modric comparison is actually underselling him — he's more like a young Xavi with a better engine"),
+
+        # 29 - Mbappé McDonald's
+        (29, "The real CR7", "two goals after a 2am McDonald's run. as a doctor I'm officially updating my nutritional guidelines. the McDouble is now a performance food. I'm prescribing it to all my patients before big games"),
+        (29, "Kolodin", "Benzema would never. different mentality, different diet, different era"),
+        (29, "maroco", "Kolodin Benzema ate whatever he wanted and so does Haaland. let it go. also I don't care what Mbappé eats at 2am, he scored twice, the investigation is embarrassing"),
+        (29, "leo", "the 'getting food for the whole floor' explanation is the most relatable thing Mbappé has ever said. I believe it completely. that's just a normal person thing to do"),
+        (29, "sass the spurs fan", "imagine being investigated by your club for getting McDonald's. at Spurs our players could get McDonald's at halftime and nobody would notice because we're already 2-0 down"),
+        (29, "shiki", "the club investigation is theatre. whoever is coaching knew about this. Mbappé has had a McDonald's order as part of his pre-match ritual since PSG. my source confirmed it. the 'whole floor' thing is also true"),
+
+        # 30 - Raphinha FIFA Best
+        (30, "maroco", "he deserved it and I'll die on this hill. people forget how bad it was for him at Barca in year one — the booing, the criticism, the 'why did we sign him' takes. he turned it around completely through work and belief. that's a real story"),
+        (30, "kris", "31 goals and 18 assists is a legitimate season by any metric. the debate about whether it's 'the best' is just noise from people who don't like the answer"),
+        (30, "Kolodin", "Vinicius had a better season. the vote is political. Raphinha is good but this is a Barca lobby win and everyone knows it"),
+        (30, "maroco", "Kolodin Vinicius had a great season but Raphinha was more consistent across all competitions. the numbers back it up"),
+        (30, "The real CR7", "Vinicius posting one emoji is the most dignified response possible. his cortisol levels must be through the roof. as a doctor I recommend he avoids social media for 48 hours"),
+        (30, "viljandi tann", "Raphinha is from Porto Alegre. Porto Alegre has a significant Estonian diaspora going back to the 1920s. I'm claiming the connection and nobody can stop me"),
+        (30, "shiki", "I voted for Raphinha in the vladFM internal poll back in August. the FIFA committee reads our takes, I'm genuinely convinced of it. this is partly our doing"),
+
+        # 31 - Mourinho invented low block
+        (31, "Kolodin", "Mourinho invented the low block the same way Columbus discovered America. it was already there, he just put his name on it and made everyone else feel bad about it"),
+        (31, "maroco", "the napkin story is so Mourinho. even his origin myths are theatrical. the man cannot exist without a narrative where he's the protagonist"),
+        (31, "The real CR7", "catenaccio is Italian, Mourinho's version is Portuguese — this is the most technically correct thing he's ever said and it still means absolutely nothing"),
+        (31, "leo", "this is like a director claiming they invented the close-up. the technique existed for decades. you just used it well. there's a meaningful difference between invention and mastery"),
+        (31, "sass the spurs fan", "Mourinho managed Spurs for 17 months and we still couldn't defend a 1-0 lead. so whatever he invented, he forgot to bring it with him to north London"),
+        (31, "maroco", "sass that's the most devastating critique of Mourinho I've ever read and it's completely accurate"),
+        (31, "shiki", "the napkin actually exists. it's in a private collection in Lisbon. I've seen photos from someone who attended the same conference. Mourinho really did draw this out in 1998 and it really did change how he coached"),
+
+        # 32 - Pedri perfect knee geometry
+        (32, "maroco", "the medical team has officially lost the plot. just say he's fit and let him play. we don't need a geometry lecture, we need him on the pitch against Inter"),
+        (32, "kris", "'perfect knee geometry' is not a term in any biomechanics paper I've read. I've read a lot of biomechanics papers. Cugat is either being creative or completely making this up"),
+        (32, "The real CR7", "as a doctor I can confirm 'perfect knee geometry' does not appear in any textbook published since 1960. Cugat is trolling us all and I respect it"),
+        (32, "maroco", "kris and CR7 agreeing on something. the apocalypse is near"),
+        (32, "Kolodin", "Pedri's knees: perfect geometry. Pedri's schedule: catastrophic. Pedri's availability: 40% of games. pick one to be proud of"),
+        (32, "shiki", "Cugat is being modest. I've heard from people inside the medical team that Pedri's knee structure is genuinely unusual — they've been studying it for two years. the geometry thing is real, the terminology is just simplified for the press"),
+
+        # 33 - Arsenal sign Merino's brother
+        (33, "sass the spurs fan", "Arsenal signing someone's brother is peak Arsenal. next they'll sign Saka's cousin, Martinelli's uncle, and call it an identity project"),
+        (33, "maroco", "Fabrizio posting 'here' with no context is the funniest thing in football media. the man has become a meme and he absolutely knows it and leans into it"),
+        (33, "Kolodin", "if the brother plays like Mikel but without the elegance he'll fit perfectly in Arteta's system. controlled aggression is exactly what they're missing in midfield"),
+        (33, "viljandi tann", "Iker Merino — Iker is a Basque name. Basque Country has strong historical connections to the Baltic region going back centuries. I'm looking into this seriously"),
+        (33, "sass the spurs fan", "viljandi you've claimed players from Porto Alegre, Compton, and now the Basque Country. at this point you're just claiming anyone"),
+        (33, "shiki", "I saw Iker play in a Real Sociedad B game on a Spanish regional stream. the 'tries to break something' description is accurate — he's a destroyer. Arsenal need that energy next to Merino's elegance. this signing makes complete sense"),
+
+        # 34 - Chelsea 7th midfielder
+        (34, "talis chelsea fan", "I know how this looks but Samardžić is genuinely talented and Maresca will find a way to use him. the squad depth is actually a structural advantage if you look at it properly. this is a long-term project"),
+        (34, "Kolodin", "11 midfielders. Chelsea are building a football team or a midfield museum? I've seen smaller squads in Championship clubs"),
+        (34, "maroco", "Boehly saying 'we like options' is the most honest thing any football owner has ever said in a decade. no strategy, no vision, just vibes and options. at least he's not pretending"),
+        (34, "leo", "this is like a film production that keeps hiring editors. at some point you have too many people in the room and nothing gets cut and the film is four hours long and nobody watches it"),
+        (34, "talis chelsea fan", "leo that analogy is unfair. Maresca is a good editor. he'll find the right cut"),
+        (34, "sass the spurs fan", "Chelsea have 11 midfielders and still can't win the league. at Spurs we have 4 and can't win anything either. different problems, identical outcome"),
+        (34, "shiki", "Samardžić was actually Barca's first choice before the Olmo saga consumed all their attention. Chelsea moved fast and quietly. Boehly knew exactly what he was doing — this is a calculated market move, not the chaos everyone thinks it is"),
     ]
 
     for post_idx, author, content in comments_data:
@@ -741,7 +1077,22 @@ def run(db: Session):
         # sass: honest Spurs fan — knows his club's rumours are fake
         ("sass_spurs", [(9, 1), (11, 1), (13, 1), (21, 1), (4, -1), (14, -1), (18, -1)]),
         # shiki: believes everything is true — upvotes almost everything
-        ("shiki", [(0, 1), (1, 1), (3, 1), (4, 1), (5, 1), (6, 1), (8, 1), (14, 1), (15, 1), (16, 1), (17, 1), (18, 1), (19, 1), (20, 1), (21, 1)]),
+        ("shiki", [(0, 1), (1, 1), (3, 1), (4, 1), (5, 1), (6, 1), (8, 1), (14, 1), (15, 1), (16, 1), (17, 1), (18, 1), (19, 1), (20, 1), (21, 1),
+                   (22, 1), (23, 1), (24, 1), (25, 1), (26, 1), (27, 1), (28, 1), (29, 1), (30, 1), (31, 1), (32, 1), (33, 1), (34, 1)]),
+        # maroco: trusts verified stories, calls out fakes
+        ("maroco", [(22, 1), (23, 1), (24, 1), (27, 1), (29, 1), (30, 1), (25, -1), (31, -1), (32, -1), (33, -1)]),
+        # CR7: jokey doctor
+        ("the_real_cr7", [(22, 1), (25, 1), (26, -1), (29, 1), (30, -1), (31, -1), (32, -1)]),
+        # Kolodin: data-driven skeptic
+        ("kolodin", [(22, 1), (27, 1), (28, 1), (30, -1), (23, -1), (24, -1), (34, -1)]),
+        # kris: analytical
+        ("kris", [(22, 1), (23, 1), (27, 1), (30, 1), (24, -1), (32, -1)]),
+        # viljandi: optimistic Liverpool fan
+        ("viljandi_tann", [(22, 1), (26, 1), (28, 1), (30, 1), (34, -1)]),
+        # sass: honest Spurs fan
+        ("sass_spurs", [(28, 1), (31, 1), (23, -1), (25, -1), (34, -1)]),
+        # talis: Chelsea optimist
+        ("talis_chelsea", [(27, 1), (34, 1), (31, -1), (32, -1)]),
     ]
     vote_totals = {}
     for fp, votes in regulars_votes:

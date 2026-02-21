@@ -38,7 +38,7 @@ def _enrich(db: Session, posts: list) -> list[post_brief]:
 
 @router.get("", response_model=paginated_posts)
 def list_posts(
-    sort: str = Query("new", pattern="^(new|top|discussed)$"),
+    sort: str = Query("new", pattern="^(new|top|discussed|controversial)$"),
     tag: str | None = Query(None, max_length=50),
     page: int = Query(1, ge=1),
     per_page: int = Query(5, ge=1, le=50),
@@ -78,6 +78,24 @@ def list_posts(
         posts = (
             q.outerjoin(comment_count, Post.id == comment_count.c.post_id)
             .order_by(desc(func.coalesce(comment_count.c.cnt, 0)))
+            .offset(offset)
+            .limit(per_page)
+            .all()
+        )
+
+    elif sort == "controversial":
+        # Posts where truth_score is closest to 50 (most split verdict), ordered by comment count as tiebreaker
+        comment_count = (
+            db.query(Comment.post_id, func.count(Comment.id).label("cnt"))
+            .group_by(Comment.post_id)
+            .subquery()
+        )
+        posts = (
+            q.outerjoin(comment_count, Post.id == comment_count.c.post_id)
+            .order_by(
+                func.abs(Post.truth_score - 50),
+                desc(func.coalesce(comment_count.c.cnt, 0)),
+            )
             .offset(offset)
             .limit(per_page)
             .all()

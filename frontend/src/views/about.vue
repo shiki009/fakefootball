@@ -78,35 +78,56 @@ onBeforeUnmount(() => {
       <p class="video-caption">exclusive testimonial — translated from Korean</p>
     </div>
 
+    <div class="premise">
+      <h2 class="section-title">what is this place</h2>
+      <p class="premise-text">
+        vladFM is a satirical football news site where every story — real, fake, or somewhere in between — gets
+        truth-scored by a group of regulars who've been arguing about football for years.
+        some stories are completely made up. some are real. the regulars don't always agree on which is which.
+      </p>
+      <p class="premise-text">
+        the regulars are a cast of characters: a Barca fan who goes too deep into everything,
+        a doctor who diagnoses players mid-comment, a Madrid loyalist who only speaks in one-liners,
+        a physicist who explains transfers through dark matter, and shiki — the site moderator
+        who has never once doubted a story, no matter how obviously fake.
+        <router-link to="/regulars" class="inline-link">meet them all →</router-link>
+      </p>
+      <p class="premise-text">
+        new stories drop daily. the truth meter on each post reflects how the regulars voted.
+        a score of 95% means shiki confirmed it with three separate sources.
+        a score of 5% means even shiki had doubts — which has happened exactly once.
+      </p>
+    </div>
+
     <div class="features">
-      <h2 class="section-title">why vladFM?</h2>
+      <h2 class="section-title">how it works</h2>
       <div class="feature-grid">
         <div class="feature">
           <span class="feature-icon">✓</span>
           <div>
+            <div class="feature-title">daily stories</div>
+            <div class="feature-desc">new posts every day — a mix of satire and real football news, grounded in what's actually happening</div>
+          </div>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">✓</span>
+          <div>
+            <div class="feature-title">truth meter</div>
+            <div class="feature-desc">each story is voted on by <router-link to="/regulars" class="inline-link">the regulars</router-link>. their verdict becomes the truth score</div>
+          </div>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">✓</span>
+          <div>
+            <div class="feature-title">the regulars argue</div>
+            <div class="feature-desc">every post gets comments from the regulars — in character, aware of each other, occasionally losing the plot</div>
+          </div>
+        </div>
+        <div class="feature">
+          <span class="feature-icon">✓</span>
+          <div>
             <div class="feature-title">100% accurate*</div>
-            <div class="feature-desc">*accuracy not measured by any known metric</div>
-          </div>
-        </div>
-        <div class="feature">
-          <span class="feature-icon">✓</span>
-          <div>
-            <div class="feature-title">trusted by regulars</div>
-            <div class="feature-desc">shiki has never doubted a single story — <router-link to="/regulars" class="inline-link">meet them</router-link></div>
-          </div>
-        </div>
-        <div class="feature">
-          <span class="feature-icon">✓</span>
-          <div>
-            <div class="feature-title">breaking news</div>
-            <div class="feature-desc">we break it before it happens (because it doesn't)</div>
-          </div>
-        </div>
-        <div class="feature">
-          <span class="feature-icon">✓</span>
-          <div>
-            <div class="feature-title">truth-scored</div>
-            <div class="feature-desc">the regulars vote on every story. the truth meter reflects their verdict</div>
+            <div class="feature-desc">*accuracy defined as: shiki believes it</div>
           </div>
         </div>
       </div>
@@ -212,6 +233,21 @@ onBeforeUnmount(() => {
   padding: 0.5rem;
   opacity: 0.7;
   font-style: italic;
+}
+
+.premise {
+  margin-bottom: 2rem;
+}
+
+.premise-text {
+  font-size: 0.88rem;
+  line-height: 1.75;
+  color: var(--text);
+  margin-bottom: 1rem;
+}
+
+.premise-text:last-child {
+  margin-bottom: 0;
 }
 
 .features {

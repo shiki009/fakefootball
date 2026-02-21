@@ -1,5 +1,5 @@
 <script setup>
-import { onMounted, watch, ref, computed } from 'vue'
+import { onMounted, onUnmounted, watch, ref, computed } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
 import { usePostsStore } from '../stores/posts.js'
 import { useTimeAgo } from '../composables/timeago.js'
@@ -32,12 +32,54 @@ const truthColor = computed(() => {
   return 'var(--text-muted)'
 })
 
-function load() {
-  postsStore.fetchPost(route.params.slug)
+function setMeta(post) {
+  if (!post) return
+  const title = `${post.title} — vladFM`
+  const desc = post.content.slice(0, 160).replace(/\n/g, ' ')
+  const ogImage = `${window.location.origin}/api/og/${post.slug}`
+  const postUrl = `${window.location.origin}/post/${post.slug}`
+  document.title = title
+  const setTag = (sel, attr, val) => {
+    let el = document.querySelector(sel)
+    if (!el) { el = document.createElement('meta'); document.head.appendChild(el) }
+    el.setAttribute(attr, val)
+  }
+  setTag('meta[name="description"]', 'content', desc)
+  setTag('meta[property="og:title"]', 'content', title)
+  setTag('meta[property="og:description"]', 'content', desc)
+  setTag('meta[property="og:image"]', 'content', ogImage)
+  setTag('meta[property="og:url"]', 'content', postUrl)
+  setTag('meta[property="og:type"]', 'content', 'article')
+  setTag('meta[name="twitter:card"]', 'content', 'summary_large_image')
+  setTag('meta[name="twitter:title"]', 'content', title)
+  setTag('meta[name="twitter:description"]', 'content', desc)
+  setTag('meta[name="twitter:image"]', 'content', ogImage)
+}
+
+function resetMeta() {
+  document.title = 'vladFM — the news that never happened'
+  const orig = 'the news that never happened — fake football news you can believe in'
+  const setTag = (sel, attr, val) => { const el = document.querySelector(sel); if (el) el.setAttribute(attr, val) }
+  setTag('meta[name="description"]', 'content', orig)
+  setTag('meta[property="og:title"]', 'content', 'vladFM')
+  setTag('meta[property="og:description"]', 'content', orig)
+  setTag('meta[property="og:image"]', 'content', '/favicon.svg')
+  setTag('meta[property="og:url"]', 'content', window.location.origin)
+  setTag('meta[property="og:type"]', 'content', 'website')
+  setTag('meta[name="twitter:card"]', 'content', 'summary')
+  setTag('meta[name="twitter:title"]', 'content', 'vladFM')
+  setTag('meta[name="twitter:description"]', 'content', orig)
+  setTag('meta[name="twitter:image"]', 'content', '/favicon.svg')
+}
+
+async function load() {
+  await postsStore.fetchPost(route.params.slug)
+  setMeta(postsStore.currentPost)
 }
 
 onMounted(load)
 watch(() => route.params.slug, load)
+onUnmounted(resetMeta)
 
 function goToTag(slug) {
   router.push(`/tag/${slug}`)
