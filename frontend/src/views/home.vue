@@ -33,13 +33,20 @@ onMounted(async () => {
       satirical football news. truth-scored by <router-link to="/regulars" class="regulars-link">the regulars</router-link>. updated daily.
     </div>
 
-    <div v-if="shikiTake" class="shiki-take">
-      <div class="shiki-header">
-        <router-link to="/regulars/shiki" class="shiki-name">shiki</router-link>
-        <span class="shiki-label">vladFM moderator · my source confirmed</span>
+    <div class="shiki-take" :class="{ 'shiki-loaded': shikiTake }">
+      <template v-if="shikiTake">
+        <div class="shiki-header">
+          <router-link to="/regulars/shiki" class="shiki-name">shiki</router-link>
+          <span class="shiki-label">vladFM moderator · my source confirmed</span>
+        </div>
+        <div class="shiki-quote">"{{ shikiTake.content }}"</div>
+        <router-link :to="`/post/${shikiTake.post_slug}`" class="shiki-post">→ {{ shikiTake.post_title }}</router-link>
+      </template>
+      <div v-else class="shiki-skeleton">
+        <div class="skeleton-line short"></div>
+        <div class="skeleton-line long"></div>
+        <div class="skeleton-line medium"></div>
       </div>
-      <div class="shiki-quote">"{{ shikiTake.content }}"</div>
-      <router-link :to="`/post/${shikiTake.post_slug}`" class="shiki-post">→ {{ shikiTake.post_title }}</router-link>
     </div>
 
     <sortBar />
@@ -77,6 +84,8 @@ onMounted(async () => {
   border-radius: 8px;
   padding: 0.85rem 1rem;
   margin-bottom: 1rem;
+  min-height: 90px;
+  overflow: hidden;
 }
 
 .shiki-header {
@@ -103,6 +112,10 @@ onMounted(async () => {
   font-size: 0.68rem;
   color: var(--text-muted);
   opacity: 0.7;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  min-width: 0;
 }
 
 .shiki-quote {
@@ -127,6 +140,29 @@ onMounted(async () => {
 
 .shiki-post:hover {
   color: var(--accent);
+}
+
+.shiki-skeleton {
+  display: flex;
+  flex-direction: column;
+  gap: 0.55rem;
+  padding: 0.1rem 0;
+}
+
+.skeleton-line {
+  height: 12px;
+  background: var(--border);
+  border-radius: 4px;
+  animation: shimmer 1.4s ease-in-out infinite;
+}
+
+.skeleton-line.short  { width: 35%; }
+.skeleton-line.long   { width: 90%; }
+.skeleton-line.medium { width: 60%; }
+
+@keyframes shimmer {
+  0%, 100% { opacity: 0.4; }
+  50%       { opacity: 0.8; }
 }
 
 .post-list {
