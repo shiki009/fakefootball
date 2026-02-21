@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, Field
 from datetime import datetime
 
 
@@ -57,14 +57,14 @@ class comment_out(BaseModel):
 
 
 class comment_in(BaseModel):
-    author_name: str = "anonymous"
-    content: str
+    author_name: str = Field("anonymous", max_length=100)
+    content: str = Field(..., min_length=1, max_length=5000)
 
 
 # --- votes ---
 
 class vote_in(BaseModel):
-    fingerprint: str
+    fingerprint: str = Field(..., min_length=1, max_length=64)
     value: int  # +1 or -1
 
 

@@ -27,7 +27,13 @@ async def lifespan(app: FastAPI):
     yield
 
 
-app = FastAPI(title="fakefootball", lifespan=lifespan)
+_in_production = bool(os.environ.get("VERCEL"))
+app = FastAPI(
+    title="fakefootball",
+    lifespan=lifespan,
+    docs_url=None if _in_production else "/docs",
+    redoc_url=None if _in_production else "/redoc",
+)
 
 app.add_middleware(
     CORSMiddleware,

@@ -1,5 +1,3 @@
-import json
-import os
 from fastapi import APIRouter, Depends, HTTPException
 from sqlalchemy.orm import Session
 
@@ -8,26 +6,6 @@ from models import Post, Comment
 from schemas import comment_out, comment_in
 
 router = APIRouter(prefix="/api/posts", tags=["comments"])
-
-USER_COMMENTS_PATH = os.path.join(os.path.dirname(os.path.dirname(__file__)), "user_comments.json")
-
-
-def _persist_comment(post_id, author_name, content, created_at):
-    try:
-        with open(USER_COMMENTS_PATH, "r") as f:
-            data = json.load(f)
-    except (FileNotFoundError, json.JSONDecodeError):
-        data = []
-
-    data.append({
-        "post_id": post_id,
-        "author_name": author_name,
-        "content": content,
-        "created_at": created_at.isoformat(),
-    })
-
-    with open(USER_COMMENTS_PATH, "w") as f:
-        json.dump(data, f, indent=2)
 
 
 @router.get("/{post_id}/comments", response_model=list[comment_out])
@@ -53,7 +31,4 @@ def add_comment(post_id: int, body: comment_in, db: Session = Depends(get_db)):
     db.add(comment)
     db.commit()
     db.refresh(comment)
-
-    _persist_comment(post_id, comment.author_name, comment.content, comment.created_at)
-
     return comment
