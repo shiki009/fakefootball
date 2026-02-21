@@ -4,7 +4,22 @@ from slugify import slugify
 from datetime import datetime, timezone, timedelta
 
 
+def _patch_dates(db: Session):
+    """One-time fix: update the three seed posts that had 2022 dates."""
+    fixes = {
+        slugify("Pedri bench presses 150kg, says it helps his passing range")[:80]: datetime(2026, 1, 22, 9, 30, tzinfo=timezone.utc),
+        slugify("Kamuto Hirovato — Xavi plans to replace ter Stegen with a GK who also plays libero")[:80]: datetime(2026, 1, 23, 15, 0, tzinfo=timezone.utc),
+        slugify("PSG president Al-Khelaifi attacked match official after Real Madrid loss, broke his chain")[:80]: datetime(2026, 1, 20, 22, 0, tzinfo=timezone.utc),
+    }
+    for slug, new_date in fixes.items():
+        post = db.query(Post).filter(Post.slug == slug).first()
+        if post and post.created_at and post.created_at.year == 2022:
+            post.created_at = new_date
+    db.commit()
+
+
 def run(db: Session):
+    _patch_dates(db)
     if db.query(Post).first():
         return  # already seeded
 
@@ -83,7 +98,7 @@ def run(db: Session):
             "is_true_story": False,
             "truth_score": 0,
             "tags": ["Stats", "Absurd"],
-            "created_at": datetime(2022, 11, 14, 9, 30, tzinfo=timezone.utc),
+            "created_at": datetime(2026, 1, 22, 9, 30, tzinfo=timezone.utc),
         },
         {
             "title": "Kamuto Hirovato — Xavi plans to replace ter Stegen with a GK who also plays libero",
@@ -98,7 +113,7 @@ def run(db: Session):
             "is_true_story": False,
             "truth_score": 0,
             "tags": ["Transfer", "Breaking", "Absurd"],
-            "created_at": datetime(2022, 12, 3, 15, 0, tzinfo=timezone.utc),
+            "created_at": datetime(2026, 1, 23, 15, 0, tzinfo=timezone.utc),
         },
         {
             "title": "VAR operator caught playing Candy Crush during penalty decision",
@@ -177,7 +192,7 @@ def run(db: Session):
             "is_true_story": True,
             "truth_score": 0,
             "tags": ["Breaking", "True Story"],
-            "created_at": datetime(2022, 3, 10, 22, 0, tzinfo=timezone.utc),
+            "created_at": datetime(2026, 1, 20, 22, 0, tzinfo=timezone.utc),
         },
         {
             "title": "Al-Ittihad offer Benzema zero salary — 100% image rights only",

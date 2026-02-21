@@ -105,8 +105,8 @@ onBeforeUnmount(() => {
         <div class="feature">
           <span class="feature-icon">✓</span>
           <div>
-            <div class="feature-title">community verified</div>
-            <div class="feature-desc">upvote if true, downvote if fake, argue either way</div>
+            <div class="feature-title">truth-scored</div>
+            <div class="feature-desc">the regulars vote on every story. the truth meter reflects their verdict</div>
           </div>
         </div>
       </div>

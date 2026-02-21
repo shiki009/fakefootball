@@ -194,6 +194,7 @@ function share() {
   display: flex;
   gap: 0.3rem;
   flex-wrap: wrap;
+  margin-bottom: 0.5rem;
 }
 
 .truth-meter {
