@@ -11,9 +11,11 @@ router = APIRouter(prefix="/api/stats", tags=["stats"])
 
 @router.get("", response_model=stats_out)
 def get_stats(db: Session = Depends(get_db)):
+    last_post = db.query(func.max(Post.created_at)).scalar()
     return stats_out(
         total_posts=db.query(func.count(Post.id)).scalar(),
         total_comments=db.query(func.count(Comment.id)).scalar(),
         total_votes=db.query(func.count(Vote.id)).scalar(),
         total_tags=db.query(func.count(Tag.id)).scalar(),
+        last_post_at=last_post,
     )

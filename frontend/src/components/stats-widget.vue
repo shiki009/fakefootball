@@ -1,5 +1,6 @@
 <script setup>
 import { useStatsStore } from '../stores/stats.js'
+import { useTimeAgo } from '../composables/timeago.js'
 
 const statsStore = useStatsStore()
 </script>
@@ -24,6 +25,9 @@ const statsStore = useStatsStore()
         <span class="stat-val">{{ statsStore.stats.total_tags }}</span>
         <span class="stat-label">tags</span>
       </div>
+    </div>
+    <div class="last-updated" v-if="statsStore.stats.last_post_at">
+      last post {{ useTimeAgo(statsStore.stats.last_post_at) }}
     </div>
   </div>
 </template>
@@ -66,5 +70,15 @@ const statsStore = useStatsStore()
 .stat-label {
   font-size: 0.75rem;
   color: var(--text-muted);
+}
+
+.last-updated {
+  margin-top: 0.75rem;
+  padding-top: 0.6rem;
+  border-top: 1px solid var(--border);
+  font-family: var(--font-mono);
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.7;
 }
 </style>

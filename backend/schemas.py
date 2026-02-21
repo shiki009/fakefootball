@@ -106,3 +106,4 @@ class stats_out(BaseModel):
     total_comments: int
     total_votes: int
     total_tags: int
+    last_post_at: datetime | None = None

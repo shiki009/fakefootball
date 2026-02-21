@@ -17,6 +17,9 @@ onMounted(() => {
 
 <template>
   <div>
+    <div class="site-desc">
+      satirical football news. truth-scored by <router-link to="/regulars" class="regulars-link">the regulars</router-link>. updated daily.
+    </div>
     <sortBar />
     <loadingSpinner v-if="postsStore.loading" />
     <div v-else class="post-list">
@@ -28,6 +31,23 @@ onMounted(() => {
 </template>
 
 <style scoped>
+.site-desc {
+  font-family: var(--font-mono);
+  font-size: 0.78rem;
+  color: var(--text-muted);
+  margin-bottom: 0.9rem;
+  line-height: 1.5;
+}
+
+.regulars-link {
+  color: var(--accent);
+  text-decoration: none;
+}
+
+.regulars-link:hover {
+  text-decoration: underline;
+}
+
 .post-list {
   display: flex;
   flex-direction: column;

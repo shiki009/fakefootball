@@ -6,10 +6,11 @@ defineProps({
 </script>
 
 <template>
-  <div class="votes">
-    <span class="arrow up">▲</span>
-    <span class="score" :class="{ positive: initialScore > 0, negative: initialScore < 0 }">{{ initialScore }}</span>
-    <span class="arrow down">▼</span>
+  <div class="votes" title="voted on by the regulars">
+    <span class="score" :class="{ positive: initialScore > 0, negative: initialScore < 0, zero: initialScore === 0 }">
+      {{ initialScore > 0 ? '+' : '' }}{{ initialScore }}
+    </span>
+    <span class="label">votes</span>
   </div>
 </template>
 
@@ -18,22 +19,16 @@ defineProps({
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 0.15rem;
+  justify-content: center;
+  gap: 0.1rem;
   min-width: 40px;
-}
-
-.arrow {
-  font-size: 0.8rem;
-  color: var(--border);
-  line-height: 1;
-  padding: 0.2rem;
 }
 
 .score {
   font-family: var(--font-mono);
-  font-size: 0.85rem;
-  font-weight: 600;
-  color: var(--text-muted);
+  font-size: 0.9rem;
+  font-weight: 700;
+  line-height: 1;
 }
 
 .score.positive {
@@ -42,5 +37,17 @@ defineProps({
 
 .score.negative {
   color: var(--downvote);
+}
+
+.score.zero {
+  color: var(--text-muted);
+}
+
+.label {
+  font-family: var(--font-mono);
+  font-size: 0.6rem;
+  color: var(--text-muted);
+  text-transform: lowercase;
+  opacity: 0.6;
 }
 </style>
