@@ -13,10 +13,19 @@ def _verify_cron_secret(request: Request) -> bool:
     """Verify Vercel cron secret from Authorization header."""
     secret = os.environ.get("CRON_SECRET")
     auth = request.headers.get("Authorization", "")
-    if not secret:
-        return not os.environ.get("VERCEL")  # allow only in local dev
-    expected = f"Bearer {secret}"
-    return hmac.compare_digest(auth, expected)
+
+    if secret:
+        # CRON_SECRET is set — Vercel sends it as Bearer token automatically
+        expected = f"Bearer {secret}"
+        return hmac.compare_digest(auth, expected)
+
+    # No CRON_SECRET configured — fall back to Vercel's internal cron header
+    # Vercel sets x-vercel-cron: 1 on all cron invocations
+    if request.headers.get("x-vercel-cron") == "1":
+        return True
+
+    # Allow in local dev (no VERCEL env var)
+    return not os.environ.get("VERCEL")
 
 
 @router.get("/generate-posts")
