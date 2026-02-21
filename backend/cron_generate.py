@@ -82,19 +82,34 @@ def generate_posts_with_groq(count: int = 2) -> list[dict]:
     # Context: current football season (e.g. 2025-26)
     season = f"{today.year - 1}-{str(today.year)[-2:]}" if today.month >= 7 else f"{today.year - 2}-{str(today.year - 1)[-2:]}"
 
-    prompt = f"""You are a satirical football news writer. Today is {date_str}. Current season: {season}.
+    prompt = f"""You are a satirical football news writer for a fake news site. Today is {date_str}. Current season: {season}.
 
-Generate exactly {count} short football news item(s). Mix: some PLAUSIBLE (based on real clubs, players, trends) and some ABSURD (wildly fake but funny).
-Style: tabloid, lowercase, punchy. Like the examples below.
+Generate exactly {count} football news items. Mix plausible-sounding real stories with absurd fake ones.
+
+STYLE RULES — follow these exactly:
+- all lowercase (no capital letters except proper nouns like player/club names)
+- tabloid tone: punchy, specific, slightly dramatic
+- include specific details: exact numbers (€4.5M, 3-4 months, 4 minutes 37 seconds), real player names, real clubs
+- include quotes from unnamed sources or the player/manager
+- 3-5 paragraphs per post, each paragraph 2-4 sentences
+- title: specific and detailed, not vague (BAD: "messi to city?" — GOOD: "Real Madrid pay Mbappé's mother €4.5M yearly in commissions — more than 7 first-team players")
+
+EXAMPLE OF GOOD CONTENT (copy this depth and style):
+Title: "VAR operator caught playing Candy Crush during penalty decision"
+Content: "a leaked screenshot from the VAR booth during yesterday's Lazio — Genoa match shows the lead operator mid-game on Candy Crush Saga (level 4,281) while a crucial penalty decision was being reviewed. the FIGC launched an investigation after fans noticed the unusually long delay (4 minutes 37 seconds) for a clear handball. \"he was on a streak, couldn't stop,\" an anonymous colleague confirmed."
+
+EXAMPLE 2:
+Title: "Kounde will listen to the entire Kendrick Lamar discography as alternative treatment for his injury"
+Content: "Barcelona defender Jules Kounde suffered a hamstring injury during yesterday's away Copa del Rey match against Elche and is now reportedly exploring unconventional recovery methods. according to sources inside the Barca medical staff, Kounde has requested permission to undergo 'sonic therapy' — which consists of listening to the complete Kendrick Lamar discography on repeat, starting from Section.80 through to GNX, at full volume in the recovery room. \"the vibrations from HUMBLE. alone target the hamstring fibers directly,\" Kounde told the medical team. the physiotherapists are reportedly skeptical but 'willing to try anything at this point.' teammates have asked him to use headphones."
 
 For each item output a JSON object with:
-- "title": catchy headline (max 100 chars)
-- "content": 2-4 short paragraphs, news style
+- "title": specific, detailed headline (max 120 chars)
+- "content": 3-5 paragraphs in the exact style above (minimum 200 words)
 - "author_name": pick from {json.dumps(AUTHORS)}
-- "is_true_story": true if plausible/real, false if absurd
+- "is_true_story": true if plausible/real, false if absurd/fake
 - "tags": array of 1-3 from {json.dumps(TAGS)}
 
-Output ONLY a JSON array of these objects, no other text. Example format:
+Output ONLY a valid JSON array, no other text:
 [
   {{"title": "...", "content": "...", "author_name": "transfer_watch", "is_true_story": true, "tags": ["Transfer", "Breaking"]}},
   ...
@@ -106,7 +121,7 @@ Output ONLY a JSON array of these objects, no other text. Example format:
         model="llama-3.3-70b-versatile",
         messages=[{"role": "user", "content": prompt}],
         temperature=0.85,
-        max_tokens=2000,
+        max_tokens=3500,
     )
     content = resp.choices[0].message.content or ""
     return _parse_groq_response(content)
