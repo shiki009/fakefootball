@@ -6,13 +6,17 @@ with each commenter aware of what the previous ones said.
 Regulars also cast votes on new posts.
 """
 import json
+import logging
 import os
 import random
 import re
+import time
 import urllib.request
 import xml.etree.ElementTree as ET
 from datetime import datetime, timezone, timedelta
 from slugify import slugify
+
+logger = logging.getLogger(__name__)
 
 from groq import Groq
 from sqlalchemy.orm import Session
@@ -206,11 +210,19 @@ RSS_FEEDS = [
 ]
 
 
-def _fetch_rss_headlines(max_items: int = 8) -> list[str]:
-    """Fetch recent football headlines from RSS feeds. Returns list of title strings."""
-    headlines = []
+def _strip_html(text: str) -> str:
+    """Remove HTML tags from a string."""
+    return re.sub(r"<[^>]+>", "", text).strip()
+
+
+def _fetch_rss_stories(max_items: int = 6) -> list[dict]:
+    """Fetch recent football stories from RSS feeds.
+
+    Returns list of {"title": str, "summary": str} dicts.
+    """
+    stories = []
     for url in RSS_FEEDS:
-        if len(headlines) >= max_items:
+        if len(stories) >= max_items:
             break
         try:
             req = urllib.request.Request(url, headers={"User-Agent": "fakefootball-bot/1.0"})
@@ -221,21 +233,37 @@ def _fetch_rss_headlines(max_items: int = 8) -> list[str]:
             # RSS 2.0
             for item in root.findall(".//item"):
                 title_el = item.find("title")
-                if title_el is not None and title_el.text:
-                    headlines.append(title_el.text.strip())
-                    if len(headlines) >= max_items:
+                if title_el is None or not title_el.text:
+                    continue
+                title = title_el.text.strip()
+                summary = ""
+                for desc_tag in ("description", "summary"):
+                    desc_el = item.find(desc_tag)
+                    if desc_el is not None and desc_el.text:
+                        summary = _strip_html(desc_el.text).strip()
                         break
+                stories.append({"title": title, "summary": summary})
+                if len(stories) >= max_items:
+                    break
             # Atom fallback
-            if not headlines:
+            if not stories:
                 for entry in root.findall(".//atom:entry", ns):
                     title_el = entry.find("atom:title", ns)
-                    if title_el is not None and title_el.text:
-                        headlines.append(title_el.text.strip())
-                        if len(headlines) >= max_items:
+                    if title_el is None or not title_el.text:
+                        continue
+                    title = title_el.text.strip()
+                    summary = ""
+                    for desc_tag in ("atom:summary", "atom:content"):
+                        desc_el = entry.find(desc_tag, ns)
+                        if desc_el is not None and desc_el.text:
+                            summary = _strip_html(desc_el.text).strip()
                             break
+                    stories.append({"title": title, "summary": summary})
+                    if len(stories) >= max_items:
+                        break
         except Exception:
             continue
-    return headlines[:max_items]
+    return stories[:max_items]
 
 
 def _parse_groq_response(raw: str) -> list[dict]:
@@ -268,8 +296,8 @@ def _parse_groq_response(raw: str) -> list[dict]:
 
 def generate_posts_with_groq(count: int = 2) -> tuple[list[dict], int]:
     """
-    Use Groq to generate fake/real football news.
-    Returns (list of post dicts, number of rss headlines fetched).
+    Use Groq to generate fake/real football news grounded in current RSS stories.
+    Returns (list of post dicts, number of rss stories fetched).
     """
     api_key = os.environ.get("GROQ_API_KEY")
     if not api_key:
@@ -279,21 +307,10 @@ def generate_posts_with_groq(count: int = 2) -> tuple[list[dict], int]:
     date_str = today.strftime("%Y-%m-%d (%A, %B %d)")
     season = f"{today.year - 1}-{str(today.year)[-2:]}" if today.month >= 7 else f"{today.year - 2}-{str(today.year - 1)[-2:]}"
 
-    real_headlines = _fetch_rss_headlines(max_items=8)
-    news_context = ""
-    if real_headlines:
-        headlines_str = "\n".join(f"- {h}" for h in real_headlines)
-        news_context = f"""
-REAL FOOTBALL NEWS TODAY (use these as inspiration — spin them, exaggerate them, or invent plausible follow-ups):
-{headlines_str}
+    rss_stories = _fetch_rss_stories(max_items=6)
 
-"""
-
-    prompt = f"""You are a satirical football news writer for a fake news site. Today is {date_str}. Current season: {season}.
-{news_context}
-Generate exactly {count} football news items. Mix plausible-sounding real stories with absurd fake ones.
-
-STYLE RULES — follow these exactly:
+    # --- Style rules & examples shared by both prompt variants ---
+    style_block = f"""STYLE RULES — follow these exactly:
 - title: capitalise the first word and all proper nouns (player names, club names, countries). rest lowercase. specific and detailed, not vague (BAD: "Messi to City?" — GOOD: "Real Madrid pay Mbappé's mother €4.5M yearly in commissions — more than 7 first-team players")
 - content: sentence case — capitalise the first word of each sentence and all proper nouns. rest lowercase. tabloid tone: punchy, specific, slightly dramatic
 - include specific details: exact numbers (€4.5M, 3-4 months, 4 minutes 37 seconds), real player names, real clubs
@@ -319,7 +336,49 @@ Output ONLY a valid JSON array, no other text:
 [
   {{"title": "...", "content": "...", "author_name": "transfer_watch", "is_true_story": true, "tags": ["Transfer", "Breaking"]}},
   ...
-]
+]"""
+
+    if len(rss_stories) >= 2:
+        # --- RSS-grounded prompt: pick 2 stories, one real & one fake ---
+        picked = random.sample(rss_stories, 2)
+        story_a = picked[0]
+        story_b = picked[1]
+
+        story_a_text = f"Headline: {story_a['title']}"
+        if story_a["summary"]:
+            story_a_text += f"\nDetails: {story_a['summary']}"
+
+        story_b_text = f"Headline: {story_b['title']}"
+        if story_b["summary"]:
+            story_b_text += f"\nDetails: {story_b['summary']}"
+
+        prompt = f"""You are a satirical football news writer for a fake news site. Today is {date_str}. Current season: {season}.
+
+You have TWO tasks based on TWO real news stories. Generate exactly 2 posts.
+
+=== STORY A (rewrite as REAL news) ===
+{story_a_text}
+
+Task: Rewrite this real story in our tabloid style. Keep ALL facts accurate — same players, same clubs, same managers, same events. Add color, quotes, drama, but do NOT change who plays where or what happened. This post must be factually grounded in the story above.
+Set "is_true_story": true for this post.
+
+=== STORY B (twist into FAKE/SATIRICAL news) ===
+{story_b_text}
+
+Task: Use the real people and clubs mentioned in this story, but twist it into something absurd and satirical. The setting must be current (correct clubs, correct managers) but the event should be obviously fake and funny.
+Set "is_true_story": false for this post.
+
+CRITICAL: Use the EXACT player names, club names, and managers from the stories provided above. Do NOT substitute with outdated information from your training data. If the story says a player is at Club X, they are at Club X — do not move them to a different club.
+
+{style_block}
+"""
+    else:
+        # --- Fallback: free generation (no RSS available) ---
+        prompt = f"""You are a satirical football news writer for a fake news site. Today is {date_str}. Current season: {season}.
+
+Generate exactly {count} football news items. Mix plausible-sounding real stories with absurd fake ones.
+
+{style_block}
 """
 
     client = Groq(api_key=api_key)
@@ -330,7 +389,7 @@ Output ONLY a valid JSON array, no other text:
         max_tokens=3500,
     )
     content = resp.choices[0].message.content or ""
-    return _parse_groq_response(content), len(real_headlines)
+    return _parse_groq_response(content), len(rss_stories)
 
 
 def _parse_comment_response(raw: str) -> str | None:
@@ -403,6 +462,9 @@ Output ONLY a JSON object: {{"content": "your comment here"}}
 """
 
         try:
+            # Small delay between calls to avoid Groq rate limits
+            if results:
+                time.sleep(1)
             resp = client.chat.completions.create(
                 model="llama-3.3-70b-versatile",
                 messages=[{"role": "user", "content": prompt}],
@@ -413,7 +475,10 @@ Output ONLY a JSON object: {{"content": "your comment here"}}
             comment_text = _parse_comment_response(raw)
             if comment_text:
                 results.append({"author_name": regular["name"], "content": comment_text})
-        except Exception:
+            else:
+                logger.warning("cron: empty comment from %s, raw=%s", regular["name"], raw[:200])
+        except Exception as exc:
+            logger.error("cron: comment generation failed for %s: %s", regular["name"], exc)
             continue
 
     return results
@@ -465,19 +530,29 @@ def cast_votes_for_post(post: Post, db: Session) -> int:
 
 def run_cron_generate(db: Session) -> dict:
     """Generate posts, comments, and votes. Returns stats."""
+    t0 = time.time()
+    logger.info("cron: starting post generation")
+
     generated, rss_count = generate_posts_with_groq(count=2)
     if not generated:
-        return {"ok": False, "reason": "no_groq_or_empty", "created": 0, "rss_headlines": 0}
+        logger.warning("cron: no posts generated (missing GROQ_API_KEY or empty response)")
+        return {"ok": False, "reason": "no_groq_or_empty", "created": 0, "rss_stories": 0}
+
+    logger.info("cron: got %d posts from groq in %.1fs", len(generated), time.time() - t0)
 
     tags_by_name = {t.name: t for t in db.query(Tag).all()}
     if not tags_by_name:
-        return {"ok": False, "reason": "no_tags", "created": 0, "rss_headlines": rss_count}
+        return {"ok": False, "reason": "no_tags", "created": 0, "rss_stories": rss_count}
 
     existing_slugs = {r[0] for r in db.query(Post.slug).all()}
     created = 0
     comments_created = 0
     votes_cast = 0
     now = datetime.now(timezone.utc)
+
+    # Phase 1: create all posts and commit them immediately so they're saved
+    # even if the function times out during comment generation
+    posts_for_comments = []  # (post, title, content, is_true)
 
     for item in generated:
         title = (item.get("title") or "").strip()[:300]
@@ -513,10 +588,23 @@ def run_cron_generate(db: Session) -> dict:
             post.tags.append(tags_by_name[name])
         db.add(post)
         db.flush()  # get post.id
+        posts_for_comments.append((post, title, content, is_true))
+        created += 1
 
-        # Sequential comments — each commenter sees the thread so far
-        # 4 per post (2 posts = 8 comment calls + 1 post call = 9 total, well within 60s)
-        comments_data = generate_comments_sequential(title, content, is_true, count=4)
+    # Commit posts + votes first so they survive a timeout during comment generation
+    if posts_for_comments:
+        # Cast votes before committing (fast, no API calls)
+        for post, _, _, _ in posts_for_comments:
+            votes_cast += cast_votes_for_post(post, db)
+        db.commit()
+        logger.info("cron: committed %d posts + %d votes in %.1fs", created, votes_cast, time.time() - t0)
+
+    # Phase 2: generate and save comments (the slow part — sequential Groq calls)
+    for post, title, content, is_true in posts_for_comments:
+        t1 = time.time()
+        # 3 comments per post to stay within timeout (was 4)
+        comments_data = generate_comments_sequential(title, content, is_true, count=3)
+        logger.info("cron: generated %d comments for post %d in %.1fs", len(comments_data), post.id, time.time() - t1)
         for idx, c in enumerate(comments_data):
             if c["author_name"] not in REGULAR_NAMES:
                 continue
@@ -528,12 +616,9 @@ def run_cron_generate(db: Session) -> dict:
             ))
             comments_created += 1
 
-        # Regulars cast votes (uses savepoints internally)
-        votes_cast += cast_votes_for_post(post, db)
-        created += 1
-
-    if created:
+    if comments_created:
         db.commit()
+        logger.info("cron: committed %d comments in %.1fs total", comments_created, time.time() - t0)
 
     return {
         "ok": True,
@@ -541,5 +626,6 @@ def run_cron_generate(db: Session) -> dict:
         "comments": comments_created,
         "votes": votes_cast,
         "attempted": len(generated),
-        "rss_headlines_fetched": rss_count,
+        "rss_stories_fetched": rss_count,
+        "elapsed_seconds": round(time.time() - t0, 1),
     }
