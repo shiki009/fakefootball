@@ -10,3 +10,6 @@ backend/user_comments.json
 
 # Vercel
 .vercel
+
+# Agent pipeline artifacts
+.planning/
