@@ -269,14 +269,27 @@ def _fetch_rss_stories(max_items: int = 6) -> list[dict]:
 def _parse_groq_response(raw: str) -> list[dict]:
     """Parse Groq JSON response into list of post dicts.
 
-    Handles truncated responses by extracting individual complete JSON objects.
+    Accepts {"posts": [...]}, bare [...], or individual objects.
     """
     out = []
     raw = raw.strip()
     code_match = re.search(r"```(?:json)?\s*([\s\S]*?)```", raw)
     if code_match:
         raw = code_match.group(1).strip()
-    # Try parsing the full array first
+    # Try parsing as a complete JSON value first (object or array)
+    try:
+        parsed = json.loads(raw)
+        if isinstance(parsed, dict) and "posts" in parsed:
+            parsed = parsed["posts"]
+        if isinstance(parsed, list):
+            for item in parsed:
+                if isinstance(item, dict) and item.get("title"):
+                    out.append(item)
+            if out:
+                return out
+    except json.JSONDecodeError:
+        pass
+    # Fallback: find array in raw text
     arr_match = re.search(r"\[[\s\S]*\]", raw)
     if arr_match:
         try:
@@ -287,7 +300,7 @@ def _parse_groq_response(raw: str) -> list[dict]:
                         out.append(item)
         except json.JSONDecodeError:
             pass
-    # Fallback: extract individual complete JSON objects (handles truncated arrays)
+    # Last resort: extract individual complete JSON objects
     if not out:
         for obj_match in re.finditer(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}", raw):
             try:
@@ -337,11 +350,11 @@ For each item output a JSON object with:
 - "is_true_story": true if plausible/real, false if absurd/fake
 - "tags": array of 1-3 from {json.dumps(TAGS)}
 
-Output ONLY a valid JSON array, no other text:
-[
-  {{"title": "...", "content": "...", "author_name": "transfer_watch", "is_true_story": true, "tags": ["Transfer", "Breaking"]}},
+IMPORTANT: Output ONLY valid JSON. The "content" field must be a single JSON string with paragraphs separated by \\n\\n (not actual newlines). Escape all quotes inside strings. No markdown, no extra text. Wrap the array in a "posts" key:
+{{"posts": [
+  {{"title": "...", "content": "First paragraph.\\n\\nSecond paragraph.\\n\\nThird paragraph.", "author_name": "transfer_watch", "is_true_story": true, "tags": ["Transfer", "Breaking"]}},
   ...
-]"""
+]}}"""
 
     if len(rss_stories) >= 2:
         # --- RSS-grounded prompt: pick 2 stories, one real & one fake ---
@@ -393,6 +406,7 @@ Generate exactly {count} football news items. Mix plausible-sounding real storie
             messages=[{"role": "user", "content": prompt}],
             temperature=0.85,
             max_tokens=5000,
+            response_format={"type": "json_object"},
         )
         content = resp.choices[0].message.content or ""
         logger.info("cron: groq raw response length=%d, rss_stories=%d", len(content), len(rss_stories))
