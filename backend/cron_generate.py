@@ -267,12 +267,16 @@ def _fetch_rss_stories(max_items: int = 6) -> list[dict]:
 
 
 def _parse_groq_response(raw: str) -> list[dict]:
-    """Parse Groq JSON response into list of post dicts."""
+    """Parse Groq JSON response into list of post dicts.
+
+    Handles truncated responses by extracting individual complete JSON objects.
+    """
     out = []
     raw = raw.strip()
     code_match = re.search(r"```(?:json)?\s*([\s\S]*?)```", raw)
     if code_match:
         raw = code_match.group(1).strip()
+    # Try parsing the full array first
     arr_match = re.search(r"\[[\s\S]*\]", raw)
     if arr_match:
         try:
@@ -283,14 +287,15 @@ def _parse_groq_response(raw: str) -> list[dict]:
                         out.append(item)
         except json.JSONDecodeError:
             pass
-    obj_match = re.search(r"\{[\s\S]*\}", raw)
-    if not out and obj_match:
-        try:
-            obj = json.loads(obj_match.group(0))
-            if isinstance(obj, dict) and obj.get("title"):
-                out.append(obj)
-        except json.JSONDecodeError:
-            pass
+    # Fallback: extract individual complete JSON objects (handles truncated arrays)
+    if not out:
+        for obj_match in re.finditer(r"\{[^{}]*(?:\{[^{}]*\}[^{}]*)*\}", raw):
+            try:
+                obj = json.loads(obj_match.group(0))
+                if isinstance(obj, dict) and obj.get("title") and obj.get("content"):
+                    out.append(obj)
+            except json.JSONDecodeError:
+                continue
     return out
 
 
@@ -387,7 +392,7 @@ Generate exactly {count} football news items. Mix plausible-sounding real storie
             model="llama-3.3-70b-versatile",
             messages=[{"role": "user", "content": prompt}],
             temperature=0.85,
-            max_tokens=3500,
+            max_tokens=5000,
         )
         content = resp.choices[0].message.content or ""
         logger.info("cron: groq raw response length=%d, rss_stories=%d", len(content), len(rss_stories))
