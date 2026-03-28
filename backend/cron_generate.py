@@ -544,7 +544,7 @@ def cast_votes_for_post(post: Post, db: Session) -> int:
 def run_cron_generate(db: Session) -> dict:
     """Generate posts, comments, and votes. Returns stats."""
     t0 = time.time()
-    logger.info("cron: starting post generation")
+    logger.info("cron: starting post generation v2")
 
     generated, rss_count = generate_posts_with_groq(count=2)
     if not generated:
