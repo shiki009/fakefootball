@@ -382,14 +382,22 @@ Generate exactly {count} football news items. Mix plausible-sounding real storie
 """
 
     client = Groq(api_key=api_key)
-    resp = client.chat.completions.create(
-        model="llama-3.3-70b-versatile",
-        messages=[{"role": "user", "content": prompt}],
-        temperature=0.85,
-        max_tokens=3500,
-    )
-    content = resp.choices[0].message.content or ""
-    return _parse_groq_response(content), len(rss_stories)
+    try:
+        resp = client.chat.completions.create(
+            model="llama-3.3-70b-versatile",
+            messages=[{"role": "user", "content": prompt}],
+            temperature=0.85,
+            max_tokens=3500,
+        )
+        content = resp.choices[0].message.content or ""
+        logger.info("cron: groq raw response length=%d, rss_stories=%d", len(content), len(rss_stories))
+        parsed = _parse_groq_response(content)
+        if not parsed:
+            logger.warning("cron: groq returned content but parsing failed. raw[:500]=%s", content[:500])
+        return parsed, len(rss_stories)
+    except Exception as exc:
+        logger.error("cron: groq API call failed: %s", exc)
+        return [], len(rss_stories)
 
 
 def _parse_comment_response(raw: str) -> str | None:
@@ -535,8 +543,9 @@ def run_cron_generate(db: Session) -> dict:
 
     generated, rss_count = generate_posts_with_groq(count=2)
     if not generated:
-        logger.warning("cron: no posts generated (missing GROQ_API_KEY or empty response)")
-        return {"ok": False, "reason": "no_groq_or_empty", "created": 0, "rss_stories": 0}
+        logger.warning("cron: no posts generated (GROQ_API_KEY set: %s, rss_stories: %d)",
+                       bool(os.environ.get("GROQ_API_KEY")), rss_count)
+        return {"ok": False, "reason": "no_groq_or_empty", "created": 0, "rss_stories": rss_count}
 
     logger.info("cron: got %d posts from groq in %.1fs", len(generated), time.time() - t0)
 
