@@ -4,11 +4,14 @@ import os
 # make sure imports work when running from backend/
 sys.path.insert(0, os.path.dirname(__file__))
 
-import sentry_sdk
-sentry_sdk.init(
-    dsn="https://b64e66e90bf3e3f77eea18072ecbbaf7@o4511134924472320.ingest.de.sentry.io/4511134937317456",
-    traces_sample_rate=0.1,
-)
+try:
+    import sentry_sdk
+    sentry_sdk.init(
+        dsn="https://b64e66e90bf3e3f77eea18072ecbbaf7@o4511134924472320.ingest.de.sentry.io/4511134937317456",
+        traces_sample_rate=0.1,
+    )
+except ImportError:
+    pass
 
 from contextlib import asynccontextmanager
 from fastapi import FastAPI
