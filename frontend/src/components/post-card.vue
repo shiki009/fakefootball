@@ -182,7 +182,6 @@ function goToTag(slug) {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   font-weight: 500;
-  white-space: nowrap;
 }
 
 .share-btn {

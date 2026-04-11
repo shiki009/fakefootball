@@ -178,6 +178,7 @@ function share() {
 
 .post-info {
   flex: 1;
+  min-width: 0;
 }
 
 .post-title {
@@ -206,6 +207,7 @@ function share() {
   align-items: center;
   gap: 0.35rem;
   margin-bottom: 0.5rem;
+  flex-wrap: wrap;
 }
 
 .author {
@@ -271,7 +273,6 @@ function share() {
   font-family: var(--font-mono);
   font-size: 0.65rem;
   font-weight: 500;
-  white-space: nowrap;
 }
 
 .post-content {
