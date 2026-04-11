@@ -37,6 +37,7 @@ const tabs = [
 
 .tab {
   flex: 1;
+  min-width: 0;
   padding: 0.5rem;
   background: none;
   border: none;
@@ -46,6 +47,9 @@ const tabs = [
   font-weight: 500;
   color: var(--text-muted);
   transition: all 0.15s ease;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
 }
 
 .tab:hover {

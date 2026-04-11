@@ -176,6 +176,11 @@ onMounted(async () => {
   gap: 1rem;
 }
 
+.content {
+  min-width: 0;
+  overflow: hidden;
+}
+
 @media (max-width: 768px) {
   .main-grid {
     grid-template-columns: 1fr;
