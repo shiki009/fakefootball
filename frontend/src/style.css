@@ -23,7 +23,6 @@
 
 html {
   scroll-behavior: smooth;
-  overflow-y: scroll; /* always reserve scrollbar space — prevents layout shift */
 }
 
 body {
@@ -32,7 +31,6 @@ body {
   color: var(--text);
   line-height: 1.6;
   min-height: 100vh;
-  overflow-x: hidden;
   overflow-wrap: break-word;
   word-break: break-word;
 }
