@@ -23,6 +23,10 @@ from sqlalchemy.orm import Session
 
 from models import Post, Tag, Comment, Vote
 
+# Groq retires models without notice — llama-3.3-70b-versatile died mid-Aug 2026 and
+# killed generation silently for 2 weeks. Env override = swap without a redeploy.
+GROQ_MODEL = os.environ.get("GROQ_MODEL", "openai/gpt-oss-120b")
+
 TAGS = ["Transfer", "Stats", "Coaching", "True Story", "Absurd", "Breaking"]
 
 # Full character sheets — used verbatim in comment prompts so the AI has
@@ -208,6 +212,15 @@ RSS_FEEDS = [
     "https://feeds.skynews.com/feeds/rss/sports.xml",
     "http://newsrss.bbc.co.uk/rss/sportonline_uk_edition/football/rss.xml",
 ]
+
+
+def _report(exc: Exception) -> None:
+    """Send a swallowed cron exception to Sentry so a dead model is noticed same-day."""
+    try:
+        import sentry_sdk
+        sentry_sdk.capture_exception(exc)
+    except Exception:
+        pass
 
 
 def _strip_html(text: str) -> str:
@@ -402,7 +415,7 @@ Generate exactly {count} football news items. Mix plausible-sounding real storie
     client = Groq(api_key=api_key)
     try:
         resp = client.chat.completions.create(
-            model="llama-3.3-70b-versatile",
+            model=GROQ_MODEL,
             messages=[{"role": "user", "content": prompt}],
             temperature=0.85,
             max_tokens=5000,
@@ -415,7 +428,8 @@ Generate exactly {count} football news items. Mix plausible-sounding real storie
             logger.warning("cron: groq returned content but parsing failed. raw[:500]=%s", content[:500])
         return parsed, len(rss_stories)
     except Exception as exc:
-        logger.error("cron: groq API call failed: %s", exc)
+        logger.error("cron: groq API call failed (model=%s): %s", GROQ_MODEL, exc)
+        _report(exc)
         return [], len(rss_stories)
 
 
@@ -493,10 +507,11 @@ Output ONLY a JSON object: {{"content": "your comment here"}}
             if results:
                 time.sleep(1)
             resp = client.chat.completions.create(
-                model="llama-3.3-70b-versatile",
+                model=GROQ_MODEL,
                 messages=[{"role": "user", "content": prompt}],
                 temperature=0.9,
-                max_tokens=200,
+                # reasoning models burn ~150 tokens thinking before the comment
+                max_tokens=800,
             )
             raw = resp.choices[0].message.content or ""
             comment_text = _parse_comment_response(raw)
