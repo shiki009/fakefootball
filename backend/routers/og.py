@@ -113,7 +113,7 @@ def _build_svg(title: str, author: str, truth_score: int, is_true_story: bool) -
   <text x="436" y="{H - 100}" font-size="20" font-weight="600" fill="{tc}" font-family="system-ui,monospace,sans-serif">{_escape(tl)} {truth_score}%</text>
 
   <!-- bottom tagline -->
-  <text x="80" y="{H - 60}" font-size="18" fill="{_MUTED}" font-family="system-ui,monospace,sans-serif" opacity="0.6">truth-scored by the regulars · vladfm.vercel.app</text>
+  <text x="80" y="{H - 60}" font-size="18" fill="{_MUTED}" font-family="system-ui,monospace,sans-serif" opacity="0.6">truth-scored by the regulars · fakefootball.vercel.app</text>
 </svg>"""
     return svg
 
